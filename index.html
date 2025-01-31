@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vaccine Mandate Preference Decision Aid Tool</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Vaccine Mandate Preference Decision Aid Tool</h1>
+      <p>Help us understand your preferences for future vaccine mandates across Australia, France, and Italy.</p>
+    </header>
+
+    <section id="instructions">
+      <h2>Section 2: Your Preferences for Vaccine Mandates</h2>
+      <p>In this section, we would like to understand how the characteristics of a vaccine mandate influence your choice. To help us understand how you choose the vaccine mandate, we are going to ask you a series of eight choices. The following slides give you some information about vaccine mandate features that will be included in the choice tasks. Please take some time to read them carefully. After this section, you will start completing the choice tasks.</p>
+
+      <p>We will describe the vaccine mandates using six characteristics below.</p>
+
+      <ul>
+        <li><strong>1. Scope of the Mandate:</strong> Who is required to get vaccinated?</li>
+        <li><strong>2. Infection Threshold for Mandate Activation:</strong> At what level of disease spread is the mandate activated?</li>
+        <li><strong>3. Vaccine Coverage Requirement for Lifting Mandates:</strong> What percentage of the population needs to be vaccinated before mandates can be lifted?</li>
+        <li><strong>4. Incentives/Benefits for Vaccination:</strong> What benefits are offered for complying?</li>
+        <li><strong>5. Exemption Policy:</strong> Under what conditions can individuals opt out?</li>
+        <li><strong>6. Financial Incentive Amount:</strong> What is the monetary reward for complying with the mandate?</li>
+      </ul>
+
+      <p><em>Scenario Description:</em> Imagine a future where a new pandemic has emerged, caused by a novel virus different from COVID-19 but with similar global impact. Safe and effective vaccines have been developed and are available to everyone. Governments around the world are considering different ways to control the spread of this new disease, including making vaccines mandatory. These mandates could differ in terms of who must get vaccinated, who can be exempt, and how the rules are enforced and lifted. All vaccines have the same characteristics: they are well-tested for safety, offer protection against the disease, and are effective in preventing severe cases of the illness.</p>
+
+      <p>In each choice task, you will compare two different hypothetical policy scenarios regarding these vaccine mandates and decide which one you prefer.</p>
+
+      <p><strong>Please read the following:</strong></p>
+      <ul>
+        <li>You are asked which vaccine mandate option you would choose (A or B).</li>
+        <li>The two vaccine mandates only differ according to the characteristics outlined. All other aspects of the mandates are the same.</li>
+        <li>At first glance, the vaccine mandates might appear the same, but in fact, each one is different.</li>
+        <li>We understand that some choices will be difficult to make, but there are no right or wrong answers. We are interested in your opinion.</li>
+      </ul>
+    </section>
+
+    <section id="survey">
+      <form id="dceForm">
+        <!-- Choice Tasks Will Be Injected Here -->
+      </form>
+      <div class="navigation">
+        <button id="prevBtn" type="button" onclick="prevTask()">Previous</button>
+        <button id="nextBtn" type="button" onclick="nextTask()">Next</button>
+        <button id="submitBtn" type="button" onclick="submitSurvey()" style="display: none;">Submit</button>
+      </div>
+    </section>
+
+    <section id="thankyou" style="display: none;">
+      <h2>Thank You!</h2>
+      <p>Your responses have been recorded. We appreciate your participation.</p>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
