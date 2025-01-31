@@ -1,382 +1,177 @@
 // script.js
 
-const choiceTasks = [
+// Example uptake prediction based on coefficients
+// Utility function: U = β1*Scope_All + β2*Threshold_100 + β3*Threshold_200 + β4*Coverage_Moderate + β5*Coverage_High + β6*Incentive_Paid + β7*Incentive_GovSub + β8*Exemption_MedRel + β9*Exemption_All + β10*Financial_Incentive
+// For simplicity, assume utility translates directly to uptake probability via softmax
+
+// Define scenarios with attribute levels
+const scenarios = [
   {
-    id: 1,
-    scenarios: [
-      {
-        label: 'A',
-        attributes: {
-          'Scope of Mandate': 'High-risk occupations only',
-          'Infection Threshold for Mandate Activation': '50 cases per 100,000 people with a 10% weekly increase',
-          'Vaccine Coverage Requirement for Lifting Mandates': '50% vaccine coverage',
-          'Incentives for Vaccination': 'Paid time off for vaccination (1-3 days)',
-          'Exemption Policy': 'Medical exemptions only',
-          'Financial Incentive Amount': 100
-        }
-      },
-      {
-        label: 'B',
-        attributes: {
-          'Scope of Mandate': 'All occupations and public spaces',
-          'Infection Threshold for Mandate Activation': '100 cases per 100,000 people with a 15% weekly increase',
-          'Vaccine Coverage Requirement for Lifting Mandates': '90% vaccine coverage',
-          'Incentives for Vaccination': 'Government subsidy or discounts on government services',
-          'Exemption Policy': 'Medical and religious exemptions',
-          'Financial Incentive Amount': 200
-        }
-      }
-    ]
+    name: 'Scenario 1: Comprehensive Mandate with No Incentives',
+    attributes: {
+      Scope_All: 1,
+      Threshold_100: 0,
+      Threshold_200: 0,
+      Coverage_Moderate: 0,
+      Coverage_High: 0,
+      Incentive_Paid: 0,
+      Incentive_GovSub: 0,
+      Exemption_MedRel: 0,
+      Exemption_All: 0,
+      Financial_Incentive: 0
+    }
   },
   {
-    id: 2,
-    scenarios: [
-      {
-        label: 'A',
-        attributes: {
-          'Scope of Mandate': 'All occupations and public spaces',
-          'Infection Threshold for Mandate Activation': '100 cases per 100,000 people with a 15% weekly increase',
-          'Vaccine Coverage Requirement for Lifting Mandates': '70% vaccine coverage',
-          'Incentives for Vaccination': 'Paid time off for vaccination (1-3 days)',
-          'Exemption Policy': 'Medical exemptions only',
-          'Financial Incentive Amount': 150
-        }
-      },
-      {
-        label: 'B',
-        attributes: {
-          'Scope of Mandate': 'High-risk occupations only',
-          'Infection Threshold for Mandate Activation': '200 cases per 100,000 people with a 20% weekly increase',
-          'Vaccine Coverage Requirement for Lifting Mandates': '90% vaccine coverage',
-          'Incentives for Vaccination': 'None (No specific benefits or incentives)',
-          'Exemption Policy': 'Medical, religious exemptions, and broad personal belief',
-          'Financial Incentive Amount': 0
-        }
-      }
-    ]
-  },
-  // Add additional choice tasks up to 8
-  {
-    id: 3,
-    scenarios: [
-      {
-        label: 'A',
-        attributes: {
-          'Scope of Mandate': 'All occupations and public spaces',
-          'Infection Threshold for Mandate Activation': '200 cases per 100,000 people with a 20% weekly increase',
-          'Vaccine Coverage Requirement for Lifting Mandates': '90% vaccine coverage',
-          'Incentives for Vaccination': 'Government subsidy or discounts on government services',
-          'Exemption Policy': 'Medical exemptions only',
-          'Financial Incentive Amount': 250
-        }
-      },
-      {
-        label: 'B',
-        attributes: {
-          'Scope of Mandate': 'High-risk occupations only',
-          'Infection Threshold for Mandate Activation': '50 cases per 100,000 people with a 10% weekly increase',
-          'Vaccine Coverage Requirement for Lifting Mandates': '50% vaccine coverage',
-          'Incentives for Vaccination': 'Paid time off for vaccination (1-3 days)',
-          'Exemption Policy': 'Medical and religious exemptions',
-          'Financial Incentive Amount': 100
-        }
-      }
-    ]
+    name: 'Scenario 2: Public Space Mandate with Moderate Financial Incentives',
+    attributes: {
+      Scope_All: 1,
+      Threshold_100: 1,
+      Threshold_200: 0,
+      Coverage_Moderate: 0,
+      Coverage_High: 0,
+      Incentive_Paid: 0,
+      Incentive_GovSub: 1,
+      Exemption_MedRel: 0,
+      Exemption_All: 0,
+      Financial_Incentive: 200
+    }
   },
   {
-    id: 4,
-    scenarios: [
-      {
-        label: 'A',
-        attributes: {
-          'Scope of Mandate': 'All occupations and public spaces',
-          'Infection Threshold for Mandate Activation': '100 cases per 100,000 people with a 15% weekly increase',
-          'Vaccine Coverage Requirement for Lifting Mandates': '70% vaccine coverage',
-          'Incentives for Vaccination': 'None (No specific benefits or incentives)',
-          'Exemption Policy': 'Medical exemptions only',
-          'Financial Incentive Amount': 0
-        }
-      },
-      {
-        label: 'B',
-        attributes: {
-          'Scope of Mandate': 'High-risk occupations only',
-          'Infection Threshold for Mandate Activation': '200 cases per 100,000 people with a 20% weekly increase',
-          'Vaccine Coverage Requirement for Lifting Mandates': '90% vaccine coverage',
-          'Incentives for Vaccination': 'Government subsidy or discounts on government services',
-          'Exemption Policy': 'Medical, religious exemptions, and broad personal belief',
-          'Financial Incentive Amount': 300
-        }
-      }
-    ]
+    name: 'Scenario 3: Employment Mandate with High Financial Incentives and Religious Exemptions',
+    attributes: {
+      Scope_All: 0,
+      Threshold_100: 0,
+      Threshold_200: 1,
+      Coverage_Moderate: 0,
+      Coverage_High: 1,
+      Incentive_Paid: 1,
+      Incentive_GovSub: 0,
+      Exemption_MedRel: 1,
+      Exemption_All: 0,
+      Financial_Incentive: 300
+    }
   },
   {
-    id: 5,
-    scenarios: [
-      {
-        label: 'A',
-        attributes: {
-          'Scope of Mandate': 'High-risk occupations only',
-          'Infection Threshold for Mandate Activation': '50 cases per 100,000 people with a 10% weekly increase',
-          'Vaccine Coverage Requirement for Lifting Mandates': '50% vaccine coverage',
-          'Incentives for Vaccination': 'Paid time off for vaccination (1-3 days)',
-          'Exemption Policy': 'Medical and religious exemptions',
-          'Financial Incentive Amount': 150
-        }
-      },
-      {
-        label: 'B',
-        attributes: {
-          'Scope of Mandate': 'All occupations and public spaces',
-          'Infection Threshold for Mandate Activation': '100 cases per 100,000 people with a 15% weekly increase',
-          'Vaccine Coverage Requirement for Lifting Mandates': '90% vaccine coverage',
-          'Incentives for Vaccination': 'None (No specific benefits or incentives)',
-          'Exemption Policy': 'Medical exemptions only',
-          'Financial Incentive Amount': 0
-        }
-      }
-    ]
-  },
-  {
-    id: 6,
-    scenarios: [
-      {
-        label: 'A',
-        attributes: {
-          'Scope of Mandate': 'All occupations and public spaces',
-          'Infection Threshold for Mandate Activation': '50 cases per 100,000 people with a 10% weekly increase',
-          'Vaccine Coverage Requirement for Lifting Mandates': '70% vaccine coverage',
-          'Incentives for Vaccination': 'Government subsidy or discounts on government services',
-          'Exemption Policy': 'Medical exemptions only',
-          'Financial Incentive Amount': 200
-        }
-      },
-      {
-        label: 'B',
-        attributes: {
-          'Scope of Mandate': 'High-risk occupations only',
-          'Infection Threshold for Mandate Activation': '200 cases per 100,000 people with a 20% weekly increase',
-          'Vaccine Coverage Requirement for Lifting Mandates': '90% vaccine coverage',
-          'Incentives for Vaccination': 'Paid time off for vaccination (1-3 days)',
-          'Exemption Policy': 'Medical, religious exemptions, and broad personal belief',
-          'Financial Incentive Amount': 300
-        }
-      }
-    ]
-  },
-  {
-    id: 7,
-    scenarios: [
-      {
-        label: 'A',
-        attributes: {
-          'Scope of Mandate': 'High-risk occupations only',
-          'Infection Threshold for Mandate Activation': '100 cases per 100,000 people with a 15% weekly increase',
-          'Vaccine Coverage Requirement for Lifting Mandates': '50% vaccine coverage',
-          'Incentives for Vaccination': 'Government subsidy or discounts on government services',
-          'Exemption Policy': 'Medical exemptions only',
-          'Financial Incentive Amount': 250
-        }
-      },
-      {
-        label: 'B',
-        attributes: {
-          'Scope of Mandate': 'All occupations and public spaces',
-          'Infection Threshold for Mandate Activation': '200 cases per 100,000 people with a 20% weekly increase',
-          'Vaccine Coverage Requirement for Lifting Mandates': '90% vaccine coverage',
-          'Incentives for Vaccination': 'None (No specific benefits or incentives)',
-          'Exemption Policy': 'Medical, religious exemptions, and broad personal belief',
-          'Financial Incentive Amount': 0
-        }
-      }
-    ]
-  },
-  {
-    id: 8,
-    scenarios: [
-      {
-        label: 'A',
-        attributes: {
-          'Scope of Mandate': 'All occupations and public spaces',
-          'Infection Threshold for Mandate Activation': '200 cases per 100,000 people with a 20% weekly increase',
-          'Vaccine Coverage Requirement for Lifting Mandates': '70% vaccine coverage',
-          'Incentives for Vaccination': 'Paid time off for vaccination (1-3 days)',
-          'Exemption Policy': 'Medical exemptions only',
-          'Financial Incentive Amount': 100
-        }
-      },
-      {
-        label: 'B',
-        attributes: {
-          'Scope of Mandate': 'High-risk occupations only',
-          'Infection Threshold for Mandate Activation': '50 cases per 100,000 people with a 10% weekly increase',
-          'Vaccine Coverage Requirement for Lifting Mandates': '90% vaccine coverage',
-          'Incentives for Vaccination': 'Government subsidy or discounts on government services',
-          'Exemption Policy': 'Medical and religious exemptions',
-          'Financial Incentive Amount': 200
-        }
-      }
-    ]
+    name: 'Scenario 4: Flexible Mandate with Access Incentives and Variable Financial Incentives',
+    attributes: {
+      Scope_All: 1,
+      Threshold_100: 0,
+      Threshold_200: 1,
+      Coverage_Moderate: 1,
+      Coverage_High: 0,
+      Incentive_Paid: 0,
+      Incentive_GovSub: 1,
+      Exemption_MedRel: 0,
+      Exemption_All: 1,
+      Financial_Incentive: 250
+    }
   }
 ];
 
-let currentTask = 0;
-const totalTasks = choiceTasks.length;
-const userResponses = [];
+// Coefficients
+const coefficients = {
+  Scope_All: 0.5,
+  Threshold_100: -0.3,
+  Threshold_200: -0.7,
+  Coverage_Moderate: 0.4,
+  Coverage_High: 0.8,
+  Incentive_Paid: 0.6,
+  Incentive_GovSub: 0.7,
+  Exemption_MedRel: 0.3,
+  Exemption_All: 0.5,
+  Financial_Incentive: 0.001
+};
 
-function loadTask(taskIndex) {
-  const form = document.getElementById('dceForm');
-  form.innerHTML = ''; // Clear previous content
+// Calculate utility for each scenario
+scenarios.forEach(scenario => {
+  let utility = 0;
+  for (const [attr, value] of Object.entries(scenario.attributes)) {
+    utility += coefficients[attr] * value;
+  }
+  scenario.utility = utility;
+});
 
-  const task = choiceTasks[taskIndex];
-  const taskDiv = document.createElement('div');
-  taskDiv.classList.add('choice-task', 'active');
-
-  const question = document.createElement('p');
-  question.textContent = `**Choice Task ${task.id}:** Please compare the two vaccine mandates (A and B) and choose the one you prefer.`;
-  taskDiv.appendChild(question);
-
-  task.scenarios.forEach(scenario => {
-    const scenarioDiv = document.createElement('div');
-    scenarioDiv.classList.add('scenario');
-
-    const label = document.createElement('h3');
-    label.textContent = `Vaccine Mandate ${scenario.label}`;
-    scenarioDiv.appendChild(label);
-
-    for (const [attr, value] of Object.entries(scenario.attributes)) {
-      const attrP = document.createElement('p');
-      attrP.innerHTML = `<strong>${attr}:</strong> ${value}`;
-      scenarioDiv.appendChild(attrP);
-    }
-
-    taskDiv.appendChild(scenarioDiv);
-  });
-
-  // Add radio buttons for selection
-  const selectionDiv = document.createElement('div');
-  selectionDiv.classList.add('selection');
-
-  const optionA = document.createElement('label');
-  optionA.innerHTML = `<input type="radio" name="choice${task.id}" value="A" required> I prefer Vaccine Mandate A`;
-  selectionDiv.appendChild(optionA);
-
-  const optionB = document.createElement('label');
-  optionB.innerHTML = `<input type="radio" name="choice${task.id}" value="B"> I prefer Vaccine Mandate B`;
-  selectionDiv.appendChild(optionB);
-
-  // Optional: Option to choose neither
-  const optionNone = document.createElement('label');
-  optionNone.innerHTML = `<input type="radio" name="choice${task.id}" value="None"> I prefer not to choose any of these vaccine mandates`;
-  selectionDiv.appendChild(optionNone);
-
-  // Optional follow-up question
-  const followUp = document.createElement('div');
-  followUp.classList.add('follow-up');
-  followUp.style.display = 'none';
-
-  const followUpQuestion = document.createElement('p');
-  followUpQuestion.textContent = 'If you have the option not to choose any of these vaccine mandates, will your choice remain the same?';
-  followUp.appendChild(followUpQuestion);
-
-  const followUpYes = document.createElement('label');
-  followUpYes.innerHTML = `<input type="radio" name="followup${task.id}" value="Yes"> Yes, my choice will remain the same.`;
-  followUp.appendChild(followUpYes);
-
-  const followUpNo = document.createElement('label');
-  followUpNo.innerHTML = `<input type="radio" name="followup${task.id}" value="No"> No, my choice will change, now I prefer not to choose any of these vaccine mandates.`;
-  followUp.appendChild(followUpNo);
-
-  selectionDiv.appendChild(followUp);
-  taskDiv.appendChild(selectionDiv);
-
-  // Add event listener to show follow-up if 'None' is selected
-  selectionDiv.addEventListener('change', function(e) {
-    if (e.target.value === 'None') {
-      followUp.style.display = 'block';
-      // Make follow-up questions required
-      followUp.querySelectorAll('input').forEach(input => input.required = true);
-    } else {
-      followUp.style.display = 'none';
-      followUp.querySelectorAll('input').forEach(input => input.required = false);
-    }
-  });
-
-  form.appendChild(taskDiv);
-
-  // Update navigation buttons
-  document.getElementById('prevBtn').style.display = taskIndex === 0 ? 'none' : 'inline-block';
-  document.getElementById('nextBtn').style.display = taskIndex === totalTasks -1 ? 'none' : 'inline-block';
-  document.getElementById('submitBtn').style.display = taskIndex === totalTasks -1 ? 'inline-block' : 'none';
+// Softmax function to convert utilities to probabilities
+function softmax(scenarios) {
+  const expUtilities = scenarios.map(s => Math.exp(s.utility));
+  const sumExp = expUtilities.reduce((a, b) => a + b, 0);
+  return scenarios.map((s, i) => ({
+    name: s.name,
+    uptake: (expUtilities[i] / sumExp) * 100
+  }));
 }
 
-function nextTask() {
-  const form = document.getElementById('dceForm');
-  const task = choiceTasks[currentTask];
-  const choice = form.querySelector(`input[name="choice${task.id}"]:checked`);
-  const followup = form.querySelector(`input[name="followup${task.id}"]:checked`);
+const uptakeData = softmax(scenarios);
 
-  if (!choice) {
-    alert('Please make a selection before proceeding.');
-    return;
-  }
-
-  if (choice.value === 'None' && !followup) {
-    alert('Please answer the follow-up question.');
-    return;
-  }
-
-  // Save response
-  userResponses[currentTask] = {
-    task: task.id,
-    choice: choice.value,
-    followup: choice.value === 'None' ? followup.value : null
-  };
-
-  if (currentTask < totalTasks -1) {
-    currentTask++;
-    loadTask(currentTask);
-  }
-}
-
-function prevTask() {
-  if (currentTask > 0) {
-    currentTask--;
-    loadTask(currentTask);
-  }
-}
-
-function submitSurvey() {
-  const form = document.getElementById('dceForm');
-  const task = choiceTasks[currentTask];
-  const choice = form.querySelector(`input[name="choice${task.id}"]:checked`);
-  const followup = form.querySelector(`input[name="followup${task.id}"]:checked`);
-
-  if (!choice) {
-    alert('Please make a selection before submitting.');
-    return;
-  }
-
-  if (choice.value === 'None' && !followup) {
-    alert('Please answer the follow-up question.');
-    return;
-  }
-
-  // Save response
-  userResponses[currentTask] = {
-    task: task.id,
-    choice: choice.value,
-    followup: choice.value === 'None' ? followup.value : null
-  };
-
-  // For demonstration, log responses to console
-  console.log('User Responses:', userResponses);
-
-  // Hide survey and show thank you message
-  document.getElementById('survey').style.display = 'none';
-  document.getElementById('thankyou').style.display = 'block';
-}
-
+// Create uptake chart
 window.onload = function() {
-  loadTask(currentTask);
+  const ctxUptake = document.getElementById('uptakeChart').getContext('2d');
+  const uptakeChart = new Chart(ctxUptake, {
+    type: 'bar',
+    data: {
+      labels: uptakeData.map(s => s.name),
+      datasets: [{
+        label: 'Predicted Uptake (%)',
+        data: uptakeData.map(s => s.uptake.toFixed(2)),
+        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true,
+          max: 100
+        }
+      },
+      plugins: {
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              return `${context.dataset.label}: ${context.parsed.y}%`;
+            }
+          }
+        }
+      }
+    }
+  });
+
+  // Create MRS Chart
+  const ctxMRS = document.getElementById('mrsChart').getContext('2d');
+  const mrsChart = new Chart(ctxMRS, {
+    type: 'bar',
+    data: {
+      labels: ['Sanctions vs. Financial Incentives'],
+      datasets: [{
+        label: 'Coefficient (\(\beta\))',
+        data: [0.8, 0.5],
+        backgroundColor: ['rgba(54, 162, 235, 0.6)', 'rgba(255, 99, 132, 0.6)'],
+        borderColor: ['rgba(54, 162, 235, 1)', 'rgba(255, 99, 132, 1)'],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      scales: {
+        x: {
+          beginAtZero: true
+        }
+      },
+      plugins: {
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              return `${context.dataset.label}: ${context.parsed.x}`;
+            }
+          }
+        }
+      }
+    }
+  });
+
+  // Calculate and display MRS
+  const mrs = -coefficients['Sanctions'] / coefficients['Financial_Incentive'];
+  document.getElementById('mrsChart').insertAdjacentHTML('afterend', `<p><strong>Calculated MRS:</strong> ${mrs.toFixed(2)}</p>`);
 };
