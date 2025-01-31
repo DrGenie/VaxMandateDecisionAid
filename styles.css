@@ -1,91 +1,128 @@
 /* styles.css */
 
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
+  font-family: 'Roboto', sans-serif;
+  background-color: #f9f9f9;
   margin: 0;
   padding: 0;
 }
 
 .container {
   width: 90%;
-  max-width: 800px;
-  margin: auto;
-  overflow: hidden;
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 20px;
-  background: #fff;
-  margin-top: 30px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
 header {
   text-align: center;
-  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #007BFF;
 }
 
 header h1 {
+  font-size: 2.5em;
   margin-bottom: 10px;
+  color: #007BFF;
 }
 
-section#instructions {
-  margin-bottom: 30px;
+header p {
+  font-size: 1.2em;
+  color: #333;
 }
 
-section#survey {
-  margin-bottom: 30px;
-}
-
-.choice-task {
-  display: none;
-}
-
-.choice-task.active {
-  display: block;
-}
-
-.scenario {
-  border: 1px solid #ddd;
-  padding: 15px;
-  margin-bottom: 15px;
-}
-
-.scenario h3 {
-  margin-top: 0;
-}
-
-.navigation {
-  text-align: center;
-}
-
-.navigation button {
-  padding: 10px 20px;
-  margin: 5px;
-  border: none;
-  background: #007BFF;
-  color: #fff;
-  cursor: pointer;
+nav {
+  margin: 20px 0;
+  background-color: #007BFF;
   border-radius: 5px;
 }
 
-.navigation button:hover {
-  background: #0056b3;
+nav ul {
+  list-style: none;
+  padding: 10px;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+nav ul li {
+  margin: 5px 0;
+}
+
+nav ul li a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+nav ul li a:hover {
+  text-decoration: underline;
+}
+
+section {
+  margin-bottom: 40px;
+}
+
+section h2 {
+  color: #007BFF;
+  border-bottom: 2px solid #007BFF;
+  padding-bottom: 5px;
+  margin-bottom: 20px;
+}
+
+.attribute {
+  margin-bottom: 20px;
+}
+
+.attribute h3 {
+  color: #555;
+}
+
+.attribute ul {
+  list-style: disc inside;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+table, th, td {
+  border: 1px solid #ddd;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+}
+
+th {
+  background-color: #007BFF;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+canvas {
+  margin: 20px 0;
 }
 
 footer {
   text-align: center;
-  padding: 10px;
-  background: #007BFF;
-  color: #fff;
-  position: fixed;
+  padding: 20px 0;
+  background-color: #007BFF;
+  color: white;
+  position: relative;
   bottom: 0;
   width: 100%;
 }
 
-input[type="radio"] {
-  margin-right: 10px;
-}
-
-label {
-  display: block;
-  margin-bottom: 10px;
+@media (max-width: 768px) {
+  nav ul {
+    flex-direction: column;
+    align-items: center;
+  }
 }
