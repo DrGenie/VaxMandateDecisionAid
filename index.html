@@ -3,59 +3,429 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Vaccine Mandate Preference Decision Aid Tool</title>
+  <title>Vaccine Mandate Decision Aid Tool</title>
   <link rel="stylesheet" href="styles.css"/>
+  <!-- Google Fonts for better typography -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Chart.js for visualizations -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <div class="container">
     <header>
-      <h1>Vaccine Mandate Preference Decision Aid Tool</h1>
-      <p>Help us understand your preferences for future vaccine mandates across Australia, France, and Italy.</p>
+      <h1>Vaccine Mandate Decision Aid Tool</h1>
+      <p>Understanding Public Preferences for Vaccine Mandates in Australia, France, and Italy</p>
     </header>
 
-    <section id="instructions">
-      <h2>Section 2: Your Preferences for Vaccine Mandates</h2>
-      <p>In this section, we would like to understand how the characteristics of a vaccine mandate influence your choice. To help us understand how you choose the vaccine mandate, we are going to ask you a series of eight choices. The following slides give you some information about vaccine mandate features that will be included in the choice tasks. Please take some time to read them carefully. After this section, you will start completing the choice tasks.</p>
-
-      <p>We will describe the vaccine mandates using six characteristics below.</p>
-
+    <nav>
       <ul>
-        <li><strong>1. Scope of the Mandate:</strong> Who is required to get vaccinated?</li>
-        <li><strong>2. Infection Threshold for Mandate Activation:</strong> At what level of disease spread is the mandate activated?</li>
-        <li><strong>3. Vaccine Coverage Requirement for Lifting Mandates:</strong> What percentage of the population needs to be vaccinated before mandates can be lifted?</li>
-        <li><strong>4. Incentives/Benefits for Vaccination:</strong> What benefits are offered for complying?</li>
-        <li><strong>5. Exemption Policy:</strong> Under what conditions can individuals opt out?</li>
-        <li><strong>6. Financial Incentive Amount:</strong> What is the monetary reward for complying with the mandate?</li>
+        <li><a href="#introduction">Introduction</a></li>
+        <li><a href="#attributes">Attributes & Levels</a></li>
+        <li><a href="#coefficients">Coefficient Estimates</a></li>
+        <li><a href="#mrs">Marginal Rate of Substitution (MRS)</a></li>
+        <li><a href="#uptake">Uptake Predictions</a></li>
+        <li><a href="#conclusion">Conclusion</a></li>
       </ul>
+    </nav>
 
-      <p><em>Scenario Description:</em> Imagine a future where a new pandemic has emerged, caused by a novel virus different from COVID-19 but with similar global impact. Safe and effective vaccines have been developed and are available to everyone. Governments around the world are considering different ways to control the spread of this new disease, including making vaccines mandatory. These mandates could differ in terms of who must get vaccinated, who can be exempt, and how the rules are enforced and lifted. All vaccines have the same characteristics: they are well-tested for safety, offer protection against the disease, and are effective in preventing severe cases of the illness.</p>
-
-      <p>In each choice task, you will compare two different hypothetical policy scenarios regarding these vaccine mandates and decide which one you prefer.</p>
-
-      <p><strong>Please read the following:</strong></p>
-      <ul>
-        <li>You are asked which vaccine mandate option you would choose (A or B).</li>
-        <li>The two vaccine mandates only differ according to the characteristics outlined. All other aspects of the mandates are the same.</li>
-        <li>At first glance, the vaccine mandates might appear the same, but in fact, each one is different.</li>
-        <li>We understand that some choices will be difficult to make, but there are no right or wrong answers. We are interested in your opinion.</li>
-      </ul>
+    <section id="introduction">
+      <h2>Introduction</h2>
+      <p>
+        This decision aid tool is designed to help policymakers and stakeholders understand the public preferences for various vaccine mandate scenarios based on a Discrete Choice Experiment (DCE) conducted in Australia, France, and Italy. By analysing the attributes and their levels, along with the estimated coefficients, this tool provides insights into how different factors influence the acceptance and uptake of vaccine mandates.
+      </p>
     </section>
 
-    <section id="survey">
-      <form id="dceForm">
-        <!-- Choice Tasks Will Be Injected Here -->
-      </form>
-      <div class="navigation">
-        <button id="prevBtn" type="button" onclick="prevTask()">Previous</button>
-        <button id="nextBtn" type="button" onclick="nextTask()">Next</button>
-        <button id="submitBtn" type="button" onclick="submitSurvey()" style="display: none;">Submit</button>
+    <section id="attributes">
+      <h2>Attributes & Levels</h2>
+      <p>
+        The DCE was structured around six key attributes, each with multiple levels. These attributes define the different characteristics of vaccine mandates that were evaluated for public preference.
+      </p>
+
+      <div class="attribute">
+        <h3>1. Scope of Mandate</h3>
+        <ul>
+          <li><strong>High-risk occupations only (Reference):</strong> Vaccines are required only for high-risk roles/occupations and individuals in settings such as healthcare workers and border protection workers.</li>
+          <li><strong>All occupations and public spaces:</strong> Vaccines are required for all workplaces and public spaces, including entry into cinemas, restaurants, and malls.</li>
+        </ul>
+      </div>
+
+      <div class="attribute">
+        <h3>2. Infection Threshold for Mandate Activation</h3>
+        <ul>
+          <li><strong>50 cases per 100,000 people with a 10% weekly increase (Reference):</strong> Indicates a moderate strain on healthcare resources, beginning to pressure healthcare services with a hybrid schooling model in place.</li>
+          <li><strong>100 cases per 100,000 people with a 15% weekly increase:</strong> Signifies a significant strain on the healthcare system, leading to delays in emergency services and considering remote operations for schools and businesses.</li>
+          <li><strong>200 cases per 100,000 people with a 20% weekly increase:</strong> Represents a severe strain, with healthcare systems likely overwhelmed and widespread closures of schools, businesses, and public places.</li>
+        </ul>
+      </div>
+
+      <div class="attribute">
+        <h3>3. Vaccine Coverage Requirement for Lifting Mandates</h3>
+        <ul>
+          <li><strong>Low vaccine coverage (50%) (Reference):</strong> Mandates may be lifted if vaccination helps reduce outbreaks and lessen healthcare load, maintaining some public health measures.</li>
+          <li><strong>Moderate vaccine coverage (70%):</strong> Mandates can be lifted once vaccination effectively reduces outbreak frequency, allowing most activities to resume safely with minimal precautions.</li>
+          <li><strong>High vaccine coverage (90%):</strong> Mandates can be lifted as widespread vaccination significantly limits virus spread, allowing a full return to normal life without additional measures.</li>
+        </ul>
+      </div>
+
+      <div class="attribute">
+        <h3>4. Incentives/Benefits for Vaccination</h3>
+        <ul>
+          <li><strong>No incentives (Reference):</strong> Relies solely on mandates and sanctions to drive compliance, emphasising the public health benefits of vaccination.</li>
+          <li><strong>Paid time off for vaccination (1-3 days):</strong> Offers between one and three days of paid leave for getting vaccinated, funded by the government to prevent income loss.</li>
+          <li><strong>Government subsidy or discounts on government services:</strong> Provides a 10% discount on various government services, including passport renewal, public transportation fares, driver's license fees, and national park entry fees, valid for six months.</li>
+        </ul>
+      </div>
+
+      <div class="attribute">
+        <h3>5. Exemption Policy</h3>
+        <ul>
+          <li><strong>Medical exemptions only (Reference):</strong> Exemptions granted solely based on medical grounds, verified by a licensed doctor.</li>
+          <li><strong>Medical and religious exemptions:</strong> Allows exemptions for medical reasons and sincerely held religious beliefs.</li>
+          <li><strong>Medical, religious exemptions, and broad personal belief:</strong> Includes exemptions for medical, religious, and a wider range of personal beliefs, such as philosophical objections.</li>
+        </ul>
+      </div>
+
+      <div class="attribute">
+        <h3>6. Financial Incentive Amount</h3>
+        <p>
+          The monetary reward offered to individuals for complying with the vaccine mandate. This is a continuous numerical attribute ranging from $0 to $500.
+        </p>
       </div>
     </section>
 
-    <section id="thankyou" style="display: none;">
-      <h2>Thank You!</h2>
-      <p>Your responses have been recorded. We appreciate your participation.</p>
+    <section id="coefficients">
+      <h2>Coefficient Estimates</h2>
+      <p>
+        The following table presents the estimated coefficients (\(\beta\)) for each attribute level based on an Error Component Logit Model. These coefficients indicate the strength and direction of the preference for each attribute level.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Attribute</th>
+            <th>Level</th>
+            <th>Dummy Variable</th>
+            <th>Coefficient (\(\beta\))</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td rowspan="2">Scope of Mandate</td>
+            <td>High-risk occupations only (Reference)</td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>All occupations and public spaces</td>
+            <td>Scope_All</td>
+            <td>0.5</td>
+          </tr>
+          <tr>
+            <td rowspan="3">Infection Threshold for Mandate Activation</td>
+            <td>50 cases/100k with 10% weekly increase (Ref)</td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>100 cases/100k with 15% weekly increase</td>
+            <td>Threshold_100</td>
+            <td>-0.3</td>
+          </tr>
+          <tr>
+            <td>200 cases/100k with 20% weekly increase</td>
+            <td>Threshold_200</td>
+            <td>-0.7</td>
+          </tr>
+          <tr>
+            <td rowspan="3">Vaccine Coverage Requirement for Lifting Mandates</td>
+            <td>Low (50%) (Reference)</td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Moderate (70%)</td>
+            <td>Coverage_Moderate</td>
+            <td>0.4</td>
+          </tr>
+          <tr>
+            <td>High (90%)</td>
+            <td>Coverage_High</td>
+            <td>0.8</td>
+          </tr>
+          <tr>
+            <td rowspan="3">Incentives for Vaccination</td>
+            <td>No incentives (Reference)</td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Paid time off for vaccination (1-3 days)</td>
+            <td>Incentive_Paid</td>
+            <td>0.6</td>
+          </tr>
+          <tr>
+            <td>Government subsidy or discounts on government services</td>
+            <td>Incentive_GovSub</td>
+            <td>0.7</td>
+          </tr>
+          <tr>
+            <td rowspan="3">Exemption Policy</td>
+            <td>Medical exemptions only (Reference)</td>
+            <td>-</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>Medical and religious exemptions</td>
+            <td>Exemption_MedRel</td>
+            <td>0.3</td>
+          </tr>
+          <tr>
+            <td>Medical, religious exemptions, and broad personal belief</td>
+            <td>Exemption_All</td>
+            <td>0.5</td>
+          </tr>
+          <tr>
+            <td>Financial Incentive Amount</td>
+            <td>Continuous ($0 - $500)</td>
+            <td>Financial_Incentive</td>
+            <td>0.001</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        <strong>Note:</strong> The coefficients indicate the impact of each attribute level on the utility of the vaccine mandate scenario. Positive values suggest a higher preference, while negative values indicate a lower preference.
+      </p>
     </section>
+
+    <section id="mrs">
+      <h2>Marginal Rate of Substitution (MRS)</h2>
+      <p>
+        The Marginal Rate of Substitution (MRS) quantifies the trade-offs respondents are willing to make between different attributes while maintaining the same level of utility. It helps in understanding how much of one attribute (e.g., Financial Incentive Amount) respondents are willing to give up to gain another attribute (e.g., Severity of Sanctions).
+      </p>
+
+      <canvas id="mrsChart" width="400" height="200"></canvas>
+
+      <p>
+        <strong>Calculation Example:</strong>
+      </p>
+      <pre>
+\[
+\text{MRS}_{\text{Sanctions}, \text{Financial Incentive Amount}} = -\frac{\beta_{\text{Sanctions}}}{\beta_{\text{Financial Incentive Amount}}}
+\]
+\[
+\text{If } \beta_{\text{Sanctions}} = 0.8 \text{ and } \beta_{\text{Financial Incentive Amount}} = 0.5,
+\]
+\[
+\text{MRS} = -\frac{0.8}{0.5} = -1.6
+\]
+\]
+      </pre>
+      <p>
+        This means respondents are willing to forego $1.60 in financial incentives for each additional unit increase in the severity of sanctions for non-compliance.
+      </p>
+
+      <script>
+        const ctx = document.getElementById('mrsChart').getContext('2d');
+        const mrsChart = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: ['Sanctions'],
+            datasets: [{
+              label: 'Coefficient (\(\beta\))',
+              data: [0.8],
+              backgroundColor: 'rgba(54, 162, 235, 0.6)',
+              borderColor: 'rgba(54, 162, 235, 1)',
+              borderWidth: 1
+            }, {
+              label: 'Financial Incentive Amount (\(\beta\))',
+              data: [0.5],
+              backgroundColor: 'rgba(255, 99, 132, 0.6)',
+              borderColor: 'rgba(255, 99, 132, 1)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            },
+            plugins: {
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    return `${context.dataset.label}: ${context.parsed.y}`;
+                  }
+                }
+              }
+            }
+          }
+        });
+      </script>
+    </section>
+
+    <section id="uptake">
+      <h2>Uptake Predictions</h2>
+      <p>
+        Using the estimated coefficients, we can predict the uptake of different vaccine mandate scenarios. The following visualisations illustrate how varying attribute levels influence the predicted acceptance rates of vaccine mandates.
+      </p>
+
+      <canvas id="uptakeChart" width="600" height="400"></canvas>
+
+      <script>
+        // Example uptake prediction based on coefficients
+        // Utility function: U = β1*Scope_All + β2*Threshold_100 + ... + β6*Financial_Incentive
+        // For simplicity, assume utility translates directly to uptake probability via softmax
+
+        // Define scenarios with attribute levels
+        const scenarios = [
+          {
+            name: 'Scenario 1: Comprehensive Mandate with No Incentives',
+            attributes: {
+              Scope_All: 1,
+              Threshold_100: 0,
+              Threshold_200: 0,
+              Coverage_Moderate: 0,
+              Coverage_High: 0,
+              Incentive_Paid: 0,
+              Incentive_GovSub: 0,
+              Exemption_MedRel: 0,
+              Exemption_All: 0,
+              Financial_Incentive: 0
+            }
+          },
+          {
+            name: 'Scenario 2: Public Space Mandate with Moderate Financial Incentives',
+            attributes: {
+              Scope_All: 1,
+              Threshold_100: 1,
+              Threshold_200: 0,
+              Coverage_Moderate: 0,
+              Coverage_High: 0,
+              Incentive_Paid: 0,
+              Incentive_GovSub: 1,
+              Exemption_MedRel: 0,
+              Exemption_All: 0,
+              Financial_Incentive: 200
+            }
+          },
+          {
+            name: 'Scenario 3: Employment Mandate with High Financial Incentives and Religious Exemptions',
+            attributes: {
+              Scope_All: 0,
+              Threshold_100: 0,
+              Threshold_200: 1,
+              Coverage_Moderate: 0,
+              Coverage_High: 1,
+              Incentive_Paid: 1,
+              Incentive_GovSub: 0,
+              Exemption_MedRel: 1,
+              Exemption_All: 0,
+              Financial_Incentive: 300
+            }
+          },
+          {
+            name: 'Scenario 4: Flexible Mandate with Access Incentives and Variable Financial Incentives',
+            attributes: {
+              Scope_All: 1,
+              Threshold_100: 0,
+              Threshold_200: 1,
+              Coverage_Moderate: 1,
+              Coverage_High: 0,
+              Incentive_Paid: 0,
+              Incentive_GovSub: 1,
+              Exemption_MedRel: 0,
+              Exemption_All: 1,
+              Financial_Incentive: 250
+            }
+          }
+        ];
+
+        // Coefficients
+        const coefficients = {
+          Scope_All: 0.5,
+          Threshold_100: -0.3,
+          Threshold_200: -0.7,
+          Coverage_Moderate: 0.4,
+          Coverage_High: 0.8,
+          Incentive_Paid: 0.6,
+          Incentive_GovSub: 0.7,
+          Exemption_MedRel: 0.3,
+          Exemption_All: 0.5,
+          Financial_Incentive: 0.001
+        };
+
+        // Calculate utility for each scenario
+        scenarios.forEach(scenario => {
+          let utility = 0;
+          for (const [attr, value] of Object.entries(scenario.attributes)) {
+            utility += coefficients[attr] * value;
+          }
+          scenario.utility = utility;
+        });
+
+        // Softmax function to convert utilities to probabilities
+        function softmax(scenarios) {
+          const expUtilities = scenarios.map(s => Math.exp(s.utility));
+          const sumExp = expUtilities.reduce((a, b) => a + b, 0);
+          return scenarios.map((s, i) => ({
+            name: s.name,
+            uptake: (expUtilities[i] / sumExp) * 100
+          }));
+        }
+
+        const uptakeData = softmax(scenarios);
+
+        // Create uptake chart
+        const ctxUptake = document.getElementById('uptakeChart').getContext('2d');
+        const uptakeChart = new Chart(ctxUptake, {
+          type: 'bar',
+          data: {
+            labels: uptakeData.map(s => s.name),
+            datasets: [{
+              label: 'Predicted Uptake (%)',
+              data: uptakeData.map(s => s.uptake.toFixed(2)),
+              backgroundColor: 'rgba(75, 192, 192, 0.6)',
+              borderColor: 'rgba(75, 192, 192, 1)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: {
+                beginAtZero: true,
+                max: 100
+              }
+            },
+            plugins: {
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    return `${context.dataset.label}: ${context.parsed.y}%`;
+                  }
+                }
+              }
+            }
+          }
+        });
+      </script>
+    </section>
+
+    <section id="conclusion">
+      <h2>Conclusion</h2>
+      <p>
+        This decision aid tool has provided an overview of how different attributes and their levels influence public preferences for vaccine mandates. By analysing coefficient estimates and calculating the Marginal Rate of Substitution (MRS), we gain insights into the trade-offs that individuals are willing to make when considering various mandate designs. The uptake predictions offer a predictive glimpse into how different policy scenarios might perform in terms of public acceptance and compliance.
+      </p>
+      <p>
+        Policymakers can utilise these insights to design vaccine mandates that align with public preferences, thereby enhancing compliance rates and ensuring the effectiveness of public health interventions. Future studies can expand upon this tool by incorporating more attributes, refining coefficient estimates, and utilising real-world data to continuously improve mandate designs.
+      </p>
+    </section>
+
+    <footer>
+      <p>&copy; 2025 Vaccine Mandate Decision Aid Tool</p>
+    </footer>
   </div>
 
   <script src="script.js"></script>
