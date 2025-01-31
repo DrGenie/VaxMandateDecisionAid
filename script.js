@@ -1,6 +1,6 @@
 // script.js
 
-// Example uptake prediction based on coefficients
+// Example uptake prediction based on coefficients ok
 // Utility function: U = β1*Scope_All + β2*Threshold_100 + β3*Threshold_200 + β4*Coverage_Moderate + β5*Coverage_High + β6*Incentive_Paid + β7*Incentive_GovSub + β8*Exemption_MedRel + β9*Exemption_All + β10*Financial_Incentive
 // For simplicity, assume utility translates directly to uptake probability via softmax
 
