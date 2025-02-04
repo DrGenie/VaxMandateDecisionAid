@@ -17,7 +17,7 @@
     <header>
       <h1>Vaccine Mandate Decision Aid Tool</h1>
       <p>
-        Explore and compare vaccine mandate scenarios based on public preferences in Australia, France, and Italy.
+        Explore and compare vaccine mandate scenarios based on public preferences in Australia, France and Italy.
       </p>
     </header>
 
@@ -38,7 +38,7 @@
         <i class="fa-solid fa-exchange-alt"></i><span> MRS</span>
       </button>
       <button class="tablink" data-tab="probTab" aria-selected="false">
-        <i class="fa-solid fa-chart-pie"></i><span> Predicted Uptake</span>
+        <i class="fa-solid fa-chart-pie"></i><span> Predicted Vaccine Mandate Uptake</span>
       </button>
       <button class="tablink" data-tab="costsTab" aria-selected="false">
         <i class="fa-solid fa-calculator"></i><span> Costs &amp; Benefits</span>
@@ -52,16 +52,16 @@
     <section id="introTab" class="tabcontent" tabindex="0" style="display: block;">
       <div class="intro-box card">
         <p>
-          Vaccine mandates can vary in scope and conditions. This tool uses discrete choice experiment estimates based on theoretical and empirical research (e.g., Betsch et al., 2018; Larson et al., 2014) to illustrate trade-offs between key policy attributes.
+          Vaccine mandates can differ in their scope and conditions. This decision aid tool employs discrete choice experiment estimates—guided by targeted literature (e.g. Betsch et al., 2018; Larson et al., 2014)—to illustrate the trade‐offs between key policy attributes. The tool is designed to be self‐explanatory for policy makers.
         </p>
         <ul>
           <li><strong>Instructions</strong> – How to navigate the tool.</li>
-          <li><strong>Attributes</strong> – Detailed descriptions of each mandate feature, with benchmarks shown in brackets.</li>
-          <li><strong>Inputs</strong> – Configure your scenario by selecting alternative levels (the benchmark is indicated and not selectable).</li>
-          <li><strong>MRS</strong> – View marginal rates of substitution between selected attributes.</li>
-          <li><strong>Predicted Uptake</strong> – See the predicted uptake percentage and estimated number of participants (base = 2000 per country).</li>
-          <li><strong>Costs &amp; Benefits</strong> – Analyze detailed cost components and benefits, dynamically calculated based on uptake.</li>
-          <li><strong>Saved Scenarios</strong> – Compare and export your saved configurations.</li>
+          <li><strong>Attributes</strong> – Detailed descriptions of each mandate feature (Reference level shown in brackets).</li>
+          <li><strong>Inputs</strong> – Configure your scenario by selecting alternative levels (the Reference is applied by default).</li>
+          <li><strong>MRS</strong> – View marginal rates of substitution (trade‐offs) among attributes.</li>
+          <li><strong>Predicted Vaccine Mandate Uptake</strong> – See the predicted acceptance rate and estimated number of participants (base = 2000 per country).</li>
+          <li><strong>Costs &amp; Benefits</strong> – Analyse detailed cost components and benefits, with dynamic calculations.</li>
+          <li><strong>Saved Scenarios</strong> – Compare and export your saved configurations (CSV download available).</li>
         </ul>
       </div>
     </section>
@@ -71,15 +71,14 @@
       <div class="calculation-info card">
         <h4>How to Use This Tool</h4>
         <ol class="instruction-list">
-          <li>Review the <strong>Attributes</strong> tab to understand each mandate feature. Hover over info icons for details.</li>
-          <li>Configure your scenario in the <strong>Inputs</strong> tab. The benchmark (reference) level is shown without a radio button; select only if you wish to deviate.</li>
-          <li>Select the country first (Australia, France, or Italy).</li>
-          <li>For each attribute, choose an alternative level if desired. If no alternative is selected, the benchmark is assumed.</li>
-          <li>Click “Calculate &amp; View Results” to see the predicted uptake and trade-offs (MRS) among attributes.</li>
-          <li>Examine the <strong>MRS</strong> tab to understand the trade-offs between key attributes.</li>
-          <li>Check the <strong>Predicted Uptake</strong> tab for uptake percentages and estimated participants.</li>
-          <li>Review the <strong>Costs &amp; Benefits</strong> tab for a detailed breakdown of cost components and benefits, calculated dynamically.</li>
-          <li>Save scenarios in the <strong>Saved Scenarios</strong> tab and export comparisons to PDF.</li>
+          <li>Review the <strong>Attributes</strong> tab to understand each mandate feature. Hover over the info icons for further details.</li>
+          <li>In the <strong>Inputs</strong> tab, select your country and choose an alternative level for each attribute if you wish to depart from the Reference (which is displayed in brackets and is not selectable).</li>
+          <li>Decide whether to <strong>Adjust for Cost of Living?</strong> (yes/no) as cost differentials exist across Australia, France and Italy.</li>
+          <li>Click “Calculate &amp; View Results” to see the predicted uptake rate and the dynamically computed estimated participants (out of 2000).</li>
+          <li>Examine the <strong>MRS</strong> tab to view intuitive trade‐off measures between key attributes.</li>
+          <li>In the <strong>Predicted Vaccine Mandate Uptake</strong> tab, click “Show Uptake Chart” to display the acceptance rate along with detailed policy recommendations (a popup will appear).</li>
+          <li>Visit the <strong>Costs &amp; Benefits</strong> tab to review detailed cards explaining cost components and benefit calculations (select a benefit scenario: low, medium, or high).</li>
+          <li>Save your scenarios in the <strong>Saved Scenarios</strong> tab, compare them, and download the data as CSV.</li>
         </ol>
       </div>
     </section>
@@ -96,12 +95,12 @@
               <path fill="#2980b9" d="M12 2L2 7h20L12 2zm0 2.18L18.82 7H5.18L12 4.18zM4 9v11h16V9H4zm2 2h12v7H6v-7z"/>
             </svg>
             <i class="fa-solid fa-info-circle info-icon"></i>
-            <span class="tooltip">Benchmark: High‑risk occupations only<br><em>Only for high-risk roles (e.g., healthcare, border protection).</em></span>
+            <span class="tooltip">Reference: High‑risk occupations only<br><em>Only high‐risk roles (e.g. healthcare, border protection) are required.</em></span>
           </div>
           <div class="attribute-content">
-            <h4>Scope of the Mandate (Benchmark: High‑risk occupations only)</h4>
+            <h4>Scope of the Mandate (Reference: High‑risk occupations only)</h4>
             <p>
-              Alternative: All occupations and public spaces – vaccines required for everyone in workplaces and public areas.
+              Alternative: All occupations and public spaces – mandates apply to everyone in workplaces and public venues.
             </p>
           </div>
         </div>
@@ -115,14 +114,14 @@
               <path d="M12 6v6l4 2" stroke="#fff" stroke-width="2" fill="none"/>
             </svg>
             <i class="fa-solid fa-info-circle info-icon"></i>
-            <span class="tooltip">Benchmark: 50 cases/100k with 10% weekly increase<br><em>Moderate strain on healthcare.</em></span>
+            <span class="tooltip">Reference: 50 cases/100k with 10% weekly increase<br><em>Moderate strain on healthcare resources.</em></span>
           </div>
           <div class="attribute-content">
-            <h4>Infection Threshold (Benchmark: 50 cases/100k, 10% increase)</h4>
+            <h4>Infection Threshold (Reference: 50 cases/100k, 10% increase)</h4>
             <p>
               Alternatives:<br>
-              – 100 cases/100k with 15% weekly increase: Significant strain.<br>
-              – 200 cases/100k with 20% weekly increase: Severe strain.
+              – 100 cases/100k with 15% weekly increase: Indicates significant strain.<br>
+              – 200 cases/100k with 20% weekly increase: Indicates severe strain.
             </p>
           </div>
         </div>
@@ -136,14 +135,14 @@
               <path d="M7 7h10v10H7z" fill="#fff"/>
             </svg>
             <i class="fa-solid fa-info-circle info-icon"></i>
-            <span class="tooltip">Benchmark: 50% vaccine coverage<br><em>Half the population vaccinated.</em></span>
+            <span class="tooltip">Reference: Low vaccine coverage (50%)<br><em>50% vaccinated represents the baseline.</em></span>
           </div>
           <div class="attribute-content">
-            <h4>Vaccine Coverage Requirement (Benchmark: 50%)</h4>
+            <h4>Vaccine Coverage Requirement (Reference: 50%)</h4>
             <p>
               Alternatives:<br>
-              – Moderate (70% coverage): Fewer outbreaks.<br>
-              – High (90% coverage): Safe lifting of mandates.
+              – Moderate (70%): Fewer outbreaks expected.<br>
+              – High (90%): Enables safe lifting of mandates.
             </p>
           </div>
         </div>
@@ -158,14 +157,14 @@
               <path fill="#f39c12" d="M2 12l10 5 10-5"/>
             </svg>
             <i class="fa-solid fa-info-circle info-icon"></i>
-            <span class="tooltip">Benchmark: None<br><em>No incentives provided.</em></span>
+            <span class="tooltip">Reference: None<br><em>No incentives are provided by default.</em></span>
           </div>
           <div class="attribute-content">
-            <h4>Incentives for Vaccination (Benchmark: None)</h4>
+            <h4>Incentives for Vaccination (Reference: None)</h4>
             <p>
               Alternatives:<br>
               – Paid time off (1–3 days): Provides leave for vaccination.<br>
-              – Government subsidy/discount: 10% discount on services.
+              – Government subsidy/discount: Offers a 10% discount on select services.
             </p>
           </div>
         </div>
@@ -178,14 +177,14 @@
               <path fill="#8e44ad" d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm1 15h-2v-2h2zm0-4h-2V7h2z"/>
             </svg>
             <i class="fa-solid fa-info-circle info-icon"></i>
-            <span class="tooltip">Benchmark: Medical exemptions only<br><em>Only medically verified exemptions allowed.</em></span>
+            <span class="tooltip">Reference: Medical exemptions only<br><em>Only medically verified exemptions apply.</em></span>
           </div>
           <div class="attribute-content">
-            <h4>Exemption Policy (Benchmark: Medical exemptions only)</h4>
+            <h4>Exemption Policy (Reference: Medical exemptions only)</h4>
             <p>
               Alternatives:<br>
               – Medical and religious exemptions.<br>
-              – Medical, religious, and broad personal belief exemptions.
+              – Medical, religious and broad personal belief exemptions.
             </p>
           </div>
         </div>
@@ -196,7 +195,7 @@
     <section id="inputsTab" class="tabcontent" tabindex="0">
       <div class="input-card card">
         <h2>Scenario Inputs</h2>
-        <p>Configure your vaccine mandate scenario by selecting alternative levels for each attribute. The benchmark (reference) level is shown (without a radio button) and is applied by default if no alternative is selected.</p>
+        <p>Configure your vaccine mandate scenario by selecting alternative levels for each attribute. The Reference level is shown (without a radio button) and is applied by default.</p>
         <form onsubmit="event.preventDefault();">
           <div class="input-cards">
             <!-- Country Selection -->
@@ -210,10 +209,21 @@
                 </select>
               </div>
             </div>
+            <!-- Adjust for Cost of Living -->
+            <div class="input-level-card">
+              <h3>Adjust for Cost of Living?</h3>
+              <div class="options">
+                <select id="adjustCOL">
+                  <option value="no">No</option>
+                  <option value="yes">Yes</option>
+                </select>
+                <p class="small-text">Cost-of-living differs across Australia, France and Italy.</p>
+              </div>
+            </div>
             <!-- Scope of Mandate -->
             <div class="input-level-card">
               <h3>Scope of the Mandate</h3>
-              <p>Benchmark: High‑risk occupations only</p>
+              <p>Reference: High‑risk occupations only</p>
               <div class="options">
                 <label>
                   <input type="radio" name="scope" value="all">
@@ -224,7 +234,7 @@
             <!-- Infection Threshold -->
             <div class="input-level-card">
               <h3>Infection Threshold for Mandate Activation</h3>
-              <p>Benchmark: 50 cases/100k with 10% weekly increase</p>
+              <p>Reference: 50 cases/100k with 10% weekly increase</p>
               <div class="options">
                 <label>
                   <input type="radio" name="threshold" value="100">
@@ -239,7 +249,7 @@
             <!-- Vaccine Coverage Requirement -->
             <div class="input-level-card">
               <h3>Vaccine Coverage Requirement for Lifting Mandates</h3>
-              <p>Benchmark: Low vaccine coverage (50%)</p>
+              <p>Reference: Low vaccine coverage (50%)</p>
               <div class="options">
                 <label>
                   <input type="radio" name="coverage" value="70">
@@ -254,11 +264,11 @@
             <!-- Incentives for Vaccination -->
             <div class="input-level-card">
               <h3>Incentives/Benefits for Vaccination</h3>
-              <p>Benchmark: None (No incentives)</p>
+              <p>Reference: None (No incentives)</p>
               <div class="options">
                 <label>
                   <input type="radio" name="incentive" value="paid">
-                  Paid time off for vaccination (1-3 days)
+                  Paid time off for vaccination (1–3 days)
                 </label>
                 <label>
                   <input type="radio" name="incentive" value="govsub">
@@ -269,7 +279,7 @@
             <!-- Exemption Policy -->
             <div class="input-level-card">
               <h3>Exemption Policy</h3>
-              <p>Benchmark: Medical exemptions only</p>
+              <p>Reference: Medical exemptions only</p>
               <div class="options">
                 <label>
                   <input type="radio" name="exemption" value="medRel">
@@ -277,7 +287,7 @@
                 </label>
                 <label>
                   <input type="radio" name="exemption" value="all">
-                  Medical, religious, and broad personal belief exemptions
+                  Medical, religious and broad personal belief exemptions
                 </label>
               </div>
             </div>
@@ -286,7 +296,7 @@
             <button type="button" onclick="calculateScenario()">Calculate &amp; View Results</button>
           </div>
         </form>
-        <!-- Modal Popup for Results -->
+        <!-- Modal Popup for Input Results -->
         <div id="resultModal" class="modal">
           <div class="modal-content">
             <span class="close-button" onclick="closeModal()">&times;</span>
@@ -301,7 +311,7 @@
       <div class="calculation-info card">
         <h4>Marginal Rate of Substitution (MRS) Among Attributes</h4>
         <p>
-          The MRS quantifies the trade-offs between attributes. For example, the MRS for Infection Threshold versus Vaccine Coverage indicates how much improvement in coverage is needed to offset a less favorable threshold.
+          The MRS quantifies the trade‐offs between attributes. For instance, it indicates how much improvement in vaccine coverage is required to offset a less favourable infection threshold.
         </p>
         <div class="chart-grid">
           <div class="chart-box">
@@ -309,15 +319,16 @@
           </div>
         </div>
         <div id="mrsInfo"></div>
+        <p class="small-text">Additional comparisons between scope, incentives and exemptions are available in detailed analyses provided upon request.</p>
       </div>
     </section>
 
     <!-- Predicted Uptake Tab -->
     <section id="probTab" class="tabcontent" tabindex="0">
       <div class="calculation-info card">
-        <h4>Predicted Mandate Uptake</h4>
+        <h4>Predicted Vaccine Mandate Uptake</h4>
         <p>
-          Click “Show Uptake Chart” to compute the predicted uptake percentage and the estimated number of participants (base = 2000 per country).
+          Click “Show Uptake Chart” to compute the predicted uptake or mandate acceptance rate and the estimated number of participants (base = 2000 per country).
         </p>
         <div class="buttons-row">
           <button onclick="renderUptakeChart()">Show Uptake Chart</button>
@@ -327,16 +338,36 @@
             <canvas id="uptakeChart"></canvas>
           </div>
         </div>
+        <!-- Uptake Recommendations Modal Trigger -->
+        <div class="buttons-row">
+          <button onclick="showUptakeRecommendations()">View Detailed Recommendations</button>
+        </div>
       </div>
     </section>
+
+    <!-- Uptake Recommendations Modal -->
+    <div id="uptakeModal" class="modal">
+      <div class="modal-content">
+        <span class="close-button" onclick="closeUptakeModal()">&times;</span>
+        <div id="uptakeResults"></div>
+      </div>
+    </div>
 
     <!-- Costs & Benefits Tab -->
     <section id="costsTab" class="tabcontent" tabindex="0">
       <div class="calculation-info card">
         <h4>Costs &amp; Benefits Analysis</h4>
         <p>
-          This analysis details the cost components and benefits of the vaccine mandate scenario. Costs include fixed administrative and enforcement expenses plus variable costs per compliant individual. Benefits are estimated from reduced healthcare costs and improved public health outcomes.
+          This section details the cost components and benefits of the vaccine mandate scenario. Costs comprise fixed expenditures (administration, enforcement, communication) and variable costs per compliant participant. Benefits are derived from reduced healthcare costs and improved public health outcomes. The calculations adjust according to country-specific cost‐of‐living and benefit scenario (low, medium or high).
         </p>
+        <div class="cost-scenario">
+          <label for="benefitScenario">Select Benefit Scenario:</label>
+          <select id="benefitScenario">
+            <option value="low">Low (Benefit per participant: £400)</option>
+            <option value="medium" selected>Medium (Benefit per participant: £500)</option>
+            <option value="high">High (Benefit per participant: £600)</option>
+          </select>
+        </div>
         <div id="costsBenefitsResults"></div>
       </div>
     </section>
@@ -346,11 +377,12 @@
       <div class="calculation-info card">
         <h4>Saved Scenarios</h4>
         <p>
-          Each row displays the selected inputs along with the computed predicted uptake and estimated participants.
+          Each row displays the selected inputs along with the computed predicted uptake and net benefit. You can also download the data as CSV.
         </p>
         <div class="buttons-row">
           <button onclick="saveScenario()">Save Current Scenario</button>
           <button onclick="openComparison()">Compare &amp; Export to PDF</button>
+          <button onclick="downloadCSV()">Download CSV</button>
         </div>
         <div class="table-container">
           <table id="scenarioTable">
@@ -364,7 +396,7 @@
                 <th>Incentive</th>
                 <th>Exemption</th>
                 <th>Uptake (%)</th>
-                <th>Participants</th>
+                <th>Net Benefit</th>
               </tr>
             </thead>
             <tbody></tbody>
