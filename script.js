@@ -37,10 +37,10 @@ function getCurrencySymbol(country) {
 /** Coefficient estimates for vaccine mandate attributes */
 const vaxCoefficients = {
   scopeAll: 0.5,          // Alternative: All occupations and public spaces
-  threshold100: -0.3,     // Alternative: 100 cases/100k with 15% weekly increase
-  threshold200: -0.7,     // Alternative: 200 cases/100k with 20% weekly increase
-  coverageModerate: 0.4,  // Alternative: Moderate vaccine coverage (70%)
-  coverageHigh: 0.8,      // Alternative: High vaccine coverage (90%)
+  threshold100: 0.4,     // Alternative: 100 cases/100k with 15% weekly increase
+  threshold200: 0.7,     // Alternative: 200 cases/100k with 20% weekly increase
+  coverageModerate: -0.4,  // Alternative: Moderate vaccine coverage (70%)
+  coverageHigh: -0.8,      // Alternative: High vaccine coverage (90%)
   incentivePaid: 0.6,     // Alternative: Paid time off
   incentiveGovSub: 0.7,   // Alternative: Government subsidy/discount
   exemptionMedRel: 0.3,   // Alternative: Medical and religious exemptions
