@@ -1,4 +1,4 @@
-/* styless.css */
+/* styles.css */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -226,6 +226,13 @@ canvas {
 }
 .cost-scenario {
   margin-bottom: 15px;
+}
+.cost-card {
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #bdc3c7;
+  border-radius: 6px;
+  background-color: #fff;
 }
 
 /* TABLE */
