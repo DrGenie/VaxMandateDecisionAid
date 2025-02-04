@@ -17,7 +17,7 @@
     <header>
       <h1>Vaccine Mandate Decision Aid Tool</h1>
       <p>
-        This tool helps you explore and evaluate vaccine mandate scenarios based on public preferences in Australia, France, and Italy.
+        Explore and compare vaccine mandate scenarios based on public preferences in Australia, France, and Italy.
       </p>
     </header>
 
@@ -34,8 +34,8 @@
       <button class="tablink" data-tab="inputsTab" aria-selected="false">
         <i class="fa-solid fa-sliders"></i><span> Inputs</span>
       </button>
-      <button class="tablink" data-tab="wtpTab" aria-selected="false">
-        <i class="fa-solid fa-chart-bar"></i><span> WTP Results</span>
+      <button class="tablink" data-tab="mrsTab" aria-selected="false">
+        <i class="fa-solid fa-exchange-alt"></i><span> MRS</span>
       </button>
       <button class="tablink" data-tab="probTab" aria-selected="false">
         <i class="fa-solid fa-chart-pie"></i><span> Predicted Uptake</span>
@@ -50,17 +50,17 @@
 
     <!-- Introduction Tab -->
     <section id="introTab" class="tabcontent" tabindex="0" style="display: block;">
-      <div class="intro-box">
+      <div class="intro-box card">
         <p>
-          Public preferences regarding vaccine mandates can vary with policy features. This decision aid tool uses discrete choice experiment estimates—based on theoretical expectations and evidence (e.g., Betsch et al., 2018; Larson et al., 2014)—to illustrate trade‐offs between attributes such as the mandate scope, infection threshold, vaccine coverage requirements, incentives, and exemption policies.
+          Vaccine mandates can vary in scope and conditions. This tool uses discrete choice experiment estimates based on theoretical and empirical research (e.g., Betsch et al., 2018; Larson et al., 2014) to illustrate trade-offs between key policy attributes.
         </p>
         <ul>
           <li><strong>Instructions</strong> – How to navigate the tool.</li>
-          <li><strong>Attributes</strong> – Explanation of each mandate feature.</li>
-          <li><strong>Inputs</strong> – Set your scenario levels (including country selection).</li>
-          <li><strong>WTP Results</strong> – View willingness‐to‐pay estimates for each attribute.</li>
-          <li><strong>Predicted Uptake</strong> – See uptake probabilities and participant numbers (base = 2000 per country).</li>
-          <li><strong>Costs &amp; Benefits</strong> – Explore a cost–benefit analysis of the scenario.</li>
+          <li><strong>Attributes</strong> – Detailed descriptions of each mandate feature, with benchmarks shown in brackets.</li>
+          <li><strong>Inputs</strong> – Configure your scenario by selecting alternative levels (the benchmark is indicated and not selectable).</li>
+          <li><strong>MRS</strong> – View marginal rates of substitution between selected attributes.</li>
+          <li><strong>Predicted Uptake</strong> – See the predicted uptake percentage and estimated number of participants (base = 2000 per country).</li>
+          <li><strong>Costs &amp; Benefits</strong> – Analyze detailed cost components and benefits, dynamically calculated based on uptake.</li>
           <li><strong>Saved Scenarios</strong> – Compare and export your saved configurations.</li>
         </ul>
       </div>
@@ -68,16 +68,18 @@
 
     <!-- Instructions Tab -->
     <section id="instructionsTab" class="tabcontent" tabindex="0">
-      <div class="calculation-info">
+      <div class="calculation-info card">
         <h4>How to Use This Tool</h4>
-        <ol>
-          <li>Review the <strong>Attributes</strong> tab to understand each mandate feature.</li>
-          <li>Configure your scenario in the <strong>Inputs</strong> tab – first select a country, then choose levels for each attribute.</li>
-          <li>Click “Calculate &amp; View Results” to see predicted uptake and trade‐offs.</li>
-          <li>Examine the <strong>WTP Results</strong> tab for monetary values associated with attribute changes.</li>
-          <li>Check the <strong>Predicted Uptake</strong> tab for uptake percentages and projected participant numbers.</li>
-          <li>Review the <strong>Costs &amp; Benefits</strong> tab for a cost–benefit analysis.</li>
-          <li>Save and compare scenarios in the <strong>Saved Scenarios</strong> tab or export the results to PDF.</li>
+        <ol class="instruction-list">
+          <li>Review the <strong>Attributes</strong> tab to understand each mandate feature. Hover over info icons for details.</li>
+          <li>Configure your scenario in the <strong>Inputs</strong> tab. The benchmark (reference) level is shown without a radio button; select only if you wish to deviate.</li>
+          <li>Select the country first (Australia, France, or Italy).</li>
+          <li>For each attribute, choose an alternative level if desired. If no alternative is selected, the benchmark is assumed.</li>
+          <li>Click “Calculate &amp; View Results” to see the predicted uptake and trade-offs (MRS) among attributes.</li>
+          <li>Examine the <strong>MRS</strong> tab to understand the trade-offs between key attributes.</li>
+          <li>Check the <strong>Predicted Uptake</strong> tab for uptake percentages and estimated participants.</li>
+          <li>Review the <strong>Costs &amp; Benefits</strong> tab for a detailed breakdown of cost components and benefits, calculated dynamically.</li>
+          <li>Save scenarios in the <strong>Saved Scenarios</strong> tab and export comparisons to PDF.</li>
         </ol>
       </div>
     </section>
@@ -85,98 +87,105 @@
     <!-- Attributes Tab -->
     <section id="attributesTab" class="tabcontent" tabindex="0">
       <h2>Key Mandate Attributes</h2>
-      <div class="attributes-list">
-        <div class="attribute-card" tabindex="0">
+      <div class="attributes-list column">
+        <!-- Attribute 1: Scope of the Mandate -->
+        <div class="attribute-card card">
           <div class="attribute-icon">
-            <i class="fa-solid fa-briefcase" aria-hidden="true"></i>
-            <div class="tooltip" role="tooltip">
-              Only individuals in high‐risk occupations are mandated.
-            </div>
+            <!-- SVG Icon for Scope -->
+            <svg width="24" height="24" viewBox="0 0 24 24">
+              <path fill="#2980b9" d="M12 2L2 7h20L12 2zm0 2.18L18.82 7H5.18L12 4.18zM4 9v11h16V9H4zm2 2h12v7H6v-7z"/>
+            </svg>
+            <i class="fa-solid fa-info-circle info-icon"></i>
+            <span class="tooltip">Benchmark: High‑risk occupations only<br><em>Only for high-risk roles (e.g., healthcare, border protection).</em></span>
           </div>
           <div class="attribute-content">
-            <h4>Scope of Mandate</h4>
+            <h4>Scope of the Mandate (Benchmark: High‑risk occupations only)</h4>
             <p>
-              <strong>Reference:</strong> High‑risk occupations only.<br>
-              <strong>Alternative:</strong> All occupations and public spaces.
+              Alternative: All occupations and public spaces – vaccines required for everyone in workplaces and public areas.
             </p>
           </div>
         </div>
 
-        <div class="attribute-card" tabindex="0">
+        <!-- Attribute 2: Infection Threshold -->
+        <div class="attribute-card card">
           <div class="attribute-icon">
-            <i class="fa-solid fa-virus" aria-hidden="true"></i>
-            <div class="tooltip" role="tooltip">
-              Activation thresholds based on infection rates.
-            </div>
+            <!-- SVG Icon for Infection Threshold -->
+            <svg width="24" height="24" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" fill="#e74c3c"/>
+              <path d="M12 6v6l4 2" stroke="#fff" stroke-width="2" fill="none"/>
+            </svg>
+            <i class="fa-solid fa-info-circle info-icon"></i>
+            <span class="tooltip">Benchmark: 50 cases/100k with 10% weekly increase<br><em>Moderate strain on healthcare.</em></span>
           </div>
           <div class="attribute-content">
-            <h4>Infection Threshold</h4>
+            <h4>Infection Threshold (Benchmark: 50 cases/100k, 10% increase)</h4>
             <p>
-              <strong>Reference:</strong> 50 cases/100k with 10% weekly increase.<br>
-              <strong>Alternatives:</strong> 100 cases/100k (15% increase) or 200 cases/100k (20% increase).
+              Alternatives:<br>
+              – 100 cases/100k with 15% weekly increase: Significant strain.<br>
+              – 200 cases/100k with 20% weekly increase: Severe strain.
             </p>
           </div>
         </div>
 
-        <div class="attribute-card" tabindex="0">
+        <!-- Attribute 3: Vaccine Coverage Requirement -->
+        <div class="attribute-card card">
           <div class="attribute-icon">
-            <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
-            <div class="tooltip" role="tooltip">
-              Mandate lifting based on vaccine coverage.
-            </div>
+            <!-- SVG Icon for Vaccine Coverage -->
+            <svg width="24" height="24" viewBox="0 0 24 24">
+              <rect x="3" y="3" width="18" height="18" fill="#27ae60"/>
+              <path d="M7 7h10v10H7z" fill="#fff"/>
+            </svg>
+            <i class="fa-solid fa-info-circle info-icon"></i>
+            <span class="tooltip">Benchmark: 50% vaccine coverage<br><em>Half the population vaccinated.</em></span>
           </div>
           <div class="attribute-content">
-            <h4>Vaccine Coverage Requirement</h4>
+            <h4>Vaccine Coverage Requirement (Benchmark: 50%)</h4>
             <p>
-              <strong>Reference:</strong> 50% coverage.<br>
-              <strong>Alternatives:</strong> 70% or 90% coverage.
+              Alternatives:<br>
+              – Moderate (70% coverage): Fewer outbreaks.<br>
+              – High (90% coverage): Safe lifting of mandates.
             </p>
           </div>
         </div>
 
-        <div class="attribute-card" tabindex="0">
+        <!-- Attribute 4: Incentives/Benefits -->
+        <div class="attribute-card card">
           <div class="attribute-icon">
-            <i class="fa-solid fa-hand-holding-dollar" aria-hidden="true"></i>
-            <div class="tooltip" role="tooltip">
-              Incentives may include paid leave or subsidies.
-            </div>
+            <!-- SVG Icon for Incentives -->
+            <svg width="24" height="24" viewBox="0 0 24 24">
+              <path fill="#f1c40f" d="M12 2L2 7l10 5 10-5-10-5z"/>
+              <path fill="#f39c12" d="M2 17l10 5 10-5"/>
+              <path fill="#f39c12" d="M2 12l10 5 10-5"/>
+            </svg>
+            <i class="fa-solid fa-info-circle info-icon"></i>
+            <span class="tooltip">Benchmark: None<br><em>No incentives provided.</em></span>
           </div>
           <div class="attribute-content">
-            <h4>Incentives for Vaccination</h4>
+            <h4>Incentives for Vaccination (Benchmark: None)</h4>
             <p>
-              <strong>Reference:</strong> No incentives.<br>
-              <strong>Alternatives:</strong> Paid time off or government subsidy/discount.
+              Alternatives:<br>
+              – Paid time off (1–3 days): Provides leave for vaccination.<br>
+              – Government subsidy/discount: 10% discount on services.
             </p>
           </div>
         </div>
 
-        <div class="attribute-card" tabindex="0">
+        <!-- Attribute 5: Exemption Policy -->
+        <div class="attribute-card card">
           <div class="attribute-icon">
-            <i class="fa-solid fa-user-check" aria-hidden="true"></i>
-            <div class="tooltip" role="tooltip">
-              Exemption policies determine who may opt out.
-            </div>
+            <!-- SVG Icon for Exemptions -->
+            <svg width="24" height="24" viewBox="0 0 24 24">
+              <path fill="#8e44ad" d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2zm1 15h-2v-2h2zm0-4h-2V7h2z"/>
+            </svg>
+            <i class="fa-solid fa-info-circle info-icon"></i>
+            <span class="tooltip">Benchmark: Medical exemptions only<br><em>Only medically verified exemptions allowed.</em></span>
           </div>
           <div class="attribute-content">
-            <h4>Exemption Policy</h4>
+            <h4>Exemption Policy (Benchmark: Medical exemptions only)</h4>
             <p>
-              <strong>Reference:</strong> Medical exemptions only.<br>
-              <strong>Alternatives:</strong> Medical plus religious, or broad personal belief exemptions.
-            </p>
-          </div>
-        </div>
-
-        <div class="attribute-card" tabindex="0">
-          <div class="attribute-icon">
-            <i class="fa-solid fa-money-bill-wave" aria-hidden="true"></i>
-            <div class="tooltip" role="tooltip">
-              Financial rewards offered for compliance.
-            </div>
-          </div>
-          <div class="attribute-content">
-            <h4>Financial Incentive Amount</h4>
-            <p>
-              Continuous attribute ranging from $0 to $500.
+              Alternatives:<br>
+              – Medical and religious exemptions.<br>
+              – Medical, religious, and broad personal belief exemptions.
             </p>
           </div>
         </div>
@@ -185,9 +194,9 @@
 
     <!-- Inputs Tab -->
     <section id="inputsTab" class="tabcontent" tabindex="0">
-      <div class="input-card">
+      <div class="input-card card">
         <h2>Scenario Inputs</h2>
-        <p>Configure your vaccine mandate scenario by selecting the levels for each feature.</p>
+        <p>Configure your vaccine mandate scenario by selecting alternative levels for each attribute. The benchmark (reference) level is shown (without a radio button) and is applied by default if no alternative is selected.</p>
         <form onsubmit="event.preventDefault();">
           <div class="input-cards">
             <!-- Country Selection -->
@@ -203,12 +212,9 @@
             </div>
             <!-- Scope of Mandate -->
             <div class="input-level-card">
-              <h3>Scope of Mandate <span class="reference">(Reference: High‑risk occupations only)</span></h3>
+              <h3>Scope of the Mandate</h3>
+              <p>Benchmark: High‑risk occupations only</p>
               <div class="options">
-                <label>
-                  <input type="radio" name="scope" value="highRisk" checked>
-                  High‑risk occupations only
-                </label>
                 <label>
                   <input type="radio" name="scope" value="all">
                   All occupations and public spaces
@@ -217,12 +223,9 @@
             </div>
             <!-- Infection Threshold -->
             <div class="input-level-card">
-              <h3>Infection Threshold <span class="reference">(Reference: 50/100k, 10% increase)</span></h3>
+              <h3>Infection Threshold for Mandate Activation</h3>
+              <p>Benchmark: 50 cases/100k with 10% weekly increase</p>
               <div class="options">
-                <label>
-                  <input type="radio" name="threshold" value="50" checked>
-                  50 cases/100k with 10% weekly increase
-                </label>
                 <label>
                   <input type="radio" name="threshold" value="100">
                   100 cases/100k with 15% weekly increase
@@ -233,69 +236,49 @@
                 </label>
               </div>
             </div>
-            <!-- Vaccine Coverage -->
+            <!-- Vaccine Coverage Requirement -->
             <div class="input-level-card">
-              <h3>Vaccine Coverage Requirement <span class="reference">(Reference: 50%)</span></h3>
+              <h3>Vaccine Coverage Requirement for Lifting Mandates</h3>
+              <p>Benchmark: Low vaccine coverage (50%)</p>
               <div class="options">
                 <label>
-                  <input type="radio" name="coverage" value="50" checked>
-                  50%
-                </label>
-                <label>
                   <input type="radio" name="coverage" value="70">
-                  70%
+                  Moderate vaccine coverage (70%)
                 </label>
                 <label>
                   <input type="radio" name="coverage" value="90">
-                  90%
+                  High vaccine coverage (90%)
                 </label>
               </div>
             </div>
-            <!-- Incentives -->
+            <!-- Incentives for Vaccination -->
             <div class="input-level-card">
-              <h3>Incentives for Vaccination <span class="reference">(Reference: No incentives)</span></h3>
+              <h3>Incentives/Benefits for Vaccination</h3>
+              <p>Benchmark: None (No incentives)</p>
               <div class="options">
                 <label>
-                  <input type="radio" name="incentive" value="none" checked>
-                  No incentives
-                </label>
-                <label>
                   <input type="radio" name="incentive" value="paid">
-                  Paid time off (1–3 days)
+                  Paid time off for vaccination (1-3 days)
                 </label>
                 <label>
                   <input type="radio" name="incentive" value="govsub">
-                  Government subsidy/discount
+                  Government subsidy/discount on services
                 </label>
               </div>
             </div>
             <!-- Exemption Policy -->
             <div class="input-level-card">
-              <h3>Exemption Policy <span class="reference">(Reference: Medical exemptions only)</span></h3>
+              <h3>Exemption Policy</h3>
+              <p>Benchmark: Medical exemptions only</p>
               <div class="options">
-                <label>
-                  <input type="radio" name="exemption" value="medical" checked>
-                  Medical exemptions only
-                </label>
                 <label>
                   <input type="radio" name="exemption" value="medRel">
                   Medical and religious exemptions
                 </label>
                 <label>
                   <input type="radio" name="exemption" value="all">
-                  Medical, religious &amp; personal belief exemptions
+                  Medical, religious, and broad personal belief exemptions
                 </label>
-              </div>
-            </div>
-            <!-- Financial Incentive -->
-            <div class="input-level-card">
-              <h3>Financial Incentive Amount (USD)</h3>
-              <div class="options slider-option">
-                <label for="financialSlider">
-                  <i class="fa-solid fa-dollar-sign"></i>
-                  <span id="financialLabel">0</span>
-                </label>
-                <input type="range" id="financialSlider" min="0" max="500" step="1" value="0" oninput="updateFinancialDisplay(this.value)" />
               </div>
             </div>
           </div>
@@ -313,39 +296,34 @@
       </div>
     </section>
 
-    <!-- WTP Results Tab -->
-    <section id="wtpTab" class="tabcontent" tabindex="0">
-      <div class="calculation-info">
-        <h4>Willingness-to-Pay (WTP) Estimates</h4>
+    <!-- MRS Tab -->
+    <section id="mrsTab" class="tabcontent" tabindex="0">
+      <div class="calculation-info card">
+        <h4>Marginal Rate of Substitution (MRS) Among Attributes</h4>
         <p>
-          WTP for each mandate attribute is computed as: 
-          <br><em>WTP = - (β_attribute) / (β_Financial_Incentive)</em>
-          <br>
-          (Illustrative estimates based on theoretical expectations; see, for example, Betsch et al., 2018 and Larson et al., 2014.)
+          The MRS quantifies the trade-offs between attributes. For example, the MRS for Infection Threshold versus Vaccine Coverage indicates how much improvement in coverage is needed to offset a less favorable threshold.
         </p>
-        <div class="buttons-row">
-          <button onclick="renderWTPChart()">Show WTP Charts</button>
-        </div>
         <div class="chart-grid">
           <div class="chart-box">
-            <h3>WTP (USD)</h3>
-            <canvas id="wtpChartMain"></canvas>
+            <canvas id="mrsChart"></canvas>
           </div>
         </div>
+        <div id="mrsInfo"></div>
       </div>
     </section>
 
     <!-- Predicted Uptake Tab -->
     <section id="probTab" class="tabcontent" tabindex="0">
-      <div class="calculation-info">
+      <div class="calculation-info card">
         <h4>Predicted Mandate Uptake</h4>
-        <p>Click “Show Uptake Chart” to compute the predicted uptake percentage and projected number of participants (base = 2000 per country).</p>
+        <p>
+          Click “Show Uptake Chart” to compute the predicted uptake percentage and the estimated number of participants (base = 2000 per country).
+        </p>
         <div class="buttons-row">
           <button onclick="renderUptakeChart()">Show Uptake Chart</button>
         </div>
         <div class="chart-grid">
           <div class="chart-box" style="position: relative; height:300px;">
-            <h3>Uptake vs. Non‑uptake</h3>
             <canvas id="uptakeChart"></canvas>
           </div>
         </div>
@@ -354,19 +332,22 @@
 
     <!-- Costs & Benefits Tab -->
     <section id="costsTab" class="tabcontent" tabindex="0">
-      <div class="calculation-info">
+      <div class="calculation-info card">
         <h4>Costs &amp; Benefits Analysis</h4>
-        <div id="costsBenefitsResults">
-          <!-- Summary and chart will render here -->
-        </div>
+        <p>
+          This analysis details the cost components and benefits of the vaccine mandate scenario. Costs include fixed administrative and enforcement expenses plus variable costs per compliant individual. Benefits are estimated from reduced healthcare costs and improved public health outcomes.
+        </p>
+        <div id="costsBenefitsResults"></div>
       </div>
     </section>
 
-    <!-- Scenarios Tab -->
+    <!-- Saved Scenarios Tab -->
     <section id="scenariosTab" class="tabcontent" tabindex="0">
-      <div class="calculation-info">
+      <div class="calculation-info card">
         <h4>Saved Scenarios</h4>
-        <p>Each row displays the selected inputs along with the computed uptake and projected participant count.</p>
+        <p>
+          Each row displays the selected inputs along with the computed predicted uptake and estimated participants.
+        </p>
         <div class="buttons-row">
           <button onclick="saveScenario()">Save Current Scenario</button>
           <button onclick="openComparison()">Compare &amp; Export to PDF</button>
@@ -382,7 +363,6 @@
                 <th>Coverage</th>
                 <th>Incentive</th>
                 <th>Exemption</th>
-                <th>Financial ($)</th>
                 <th>Uptake (%)</th>
                 <th>Participants</th>
               </tr>
