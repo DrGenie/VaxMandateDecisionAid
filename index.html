@@ -52,7 +52,7 @@
     <section id="introTab" class="tabcontent" tabindex="0" style="display: block;">
       <div class="intro-box card">
         <p>
-          Vaccine mandates can differ in their scope and conditions. This decision aid tool employs discrete choice experiment estimates—guided by targeted literature (e.g. Betsch et al., 2018; Larson et al., 2014)—to illustrate the trade‐offs between key policy attributes. 
+          Vaccine mandates can differ in their scope and conditions. This decision aid tool employs discrete choice experiment estimates—guided by targeted literature (e.g. Betsch et al., 2018; Larson et al., 2014)—to illustrate the trade‐offs between key policy attributes. The tool is designed to be self‐explanatory for policy makers.
         </p>
         <ul>
           <li><strong>Instructions</strong> – How to navigate the tool.</li>
@@ -72,12 +72,12 @@
         <h4>How to Use This Tool</h4>
         <ol class="instruction-list">
           <li>Review the <strong>Attributes</strong> tab to understand each mandate feature. Hover over the info icons for further details.</li>
-          <li>In the <strong>Inputs</strong> tab, select your country and choose an alternative level for each attribute if you wish to depart from the Reference (which is displayed in brackets and is not selectable).</li>
+          <li>In the <strong>Inputs</strong> tab, select your country and choose an alternative level for each attribute if you wish to depart from the Reference (displayed in brackets and not selectable).</li>
           <li>Decide whether to <strong>Adjust for Cost of Living?</strong> (yes/no) as cost‐of‐living differs across Australia, France and Italy.</li>
           <li>Click “Calculate &amp; View Results” to see the predicted uptake rate and the dynamically computed estimated participants (out of 2000).</li>
           <li>Examine the <strong>MRS</strong> tab to view intuitive trade‐off measures between key attributes.</li>
           <li>In the <strong>Predicted Vaccine Mandate Uptake</strong> tab, click “Show Uptake Chart” to display the acceptance rate along with detailed policy recommendations (a popup will appear).</li>
-          <li>Visit the <strong>Costs &amp; Benefits</strong> tab to review detailed cards explaining cost components and benefit calculations. Select a benefit scenario (low, medium or high) to update calculations dynamically.</li>
+          <li>Visit the <strong>Costs &amp; Benefits</strong> tab to review detailed cards explaining cost components and benefit calculations. Benefit scenarios (low, medium, high) let you adjust assumptions regarding the monetary benefit per additional vaccinated individual.</li>
           <li>Save your scenarios in the <strong>Saved Scenarios</strong> tab, compare them, and download the data as CSV.</li>
         </ol>
       </div>
@@ -157,7 +157,7 @@
               <path fill="#f39c12" d="M2 12l10 5 10-5"/>
             </svg>
             <i class="fa-solid fa-info-circle info-icon"></i>
-            <span class="tooltip">Reference: None<br><em>No incentives are provided by default.</em></span>
+            <span class="tooltip">Reference: None<br><em>No incentives provided by default.</em></span>
           </div>
           <div class="attribute-content">
             <h4>Incentives for Vaccination (Reference: None)</h4>
@@ -195,7 +195,9 @@
     <section id="inputsTab" class="tabcontent" tabindex="0">
       <div class="input-card card">
         <h2>Scenario Inputs</h2>
-        <p>Configure your vaccine mandate scenario by selecting alternative levels for each attribute. The Reference level is shown (without a radio button) and is applied by default.</p>
+        <p>
+          Configure your vaccine mandate scenario by selecting alternative levels for each attribute. The Reference level is shown (without a radio button) and is applied by default.
+        </p>
         <form onsubmit="event.preventDefault();">
           <div class="input-cards">
             <!-- Country Selection -->
@@ -357,7 +359,9 @@
       <div class="calculation-info card">
         <h4>Costs &amp; Benefits Analysis</h4>
         <p>
-          This section details the cost components and benefits of the vaccine mandate scenario. Costs comprise fixed expenditures (administration, enforcement, communication, legal and monitoring costs) and variable costs per compliant participant (e.g. time lost, additional testing, and operational adjustments). Benefits are estimated from reduced healthcare costs and improved public health outcomes. Calculations adjust according to country‐specific cost‐of‐living and benefit scenario (low, medium or high).
+          This section estimates the net benefits of a vaccine mandate using a conventional benefit–cost analysis framework. Benefits include reductions in fatal and nonfatal cases of illness (valued using the value per statistical life and QALY gains), while costs include direct expenditures such as vaccine administration, staffing, legal, communication, and monitoring costs, plus variable costs per compliant participant (time losses, additional testing and operational adjustments).<br><br>
+          <strong>Rationale:</strong> The benefit per participant reflects the monetary value of reduced healthcare expenses and improved quality of life from fewer severe cases and deaths. In our tool, policy makers can choose a benefit scenario—low, medium, or high—which correspond to assumed benefit values of 400, 500, and 600 per additional vaccinated individual (in local currency), respectively. These values are indicative and can be adjusted to reflect differing assumptions about the severity of the hypothetical pandemic and the effectiveness of the mandate.<br><br>
+          The cost components are divided into a fixed component (covering administration, enforcement, legal and communication costs) and a variable component (costs incurred per compliant individual). These estimates are adjusted for country‐specific cost‐of‐living differences using targeted multipliers.
         </p>
         <div class="cost-scenario">
           <label for="benefitScenario">Select Benefit Scenario:</label>
