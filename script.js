@@ -29,22 +29,22 @@ function openTab(tabId, btn) {
   if (tabId === 'probTab') renderUptakeChart();
 }
 
-/** Currency Symbol based on Country */
+/** Return currency symbol based on country */
 function getCurrencySymbol(country) {
   return country === "Australia" ? "A$" : "€";
 }
 
 /** Coefficient estimates for vaccine mandate attributes */
 const vaxCoefficients = {
-  scopeAll: 0.5,          // for "All occupations and public spaces"
-  threshold100: -0.3,     // for "100 cases/100k with 15% weekly increase"
-  threshold200: -0.7,     // for "200 cases/100k with 20% weekly increase"
-  coverageModerate: 0.4,  // for "Moderate vaccine coverage (70%)"
-  coverageHigh: 0.8,      // for "High vaccine coverage (90%)"
-  incentivePaid: 0.6,     // for "Paid time off"
-  incentiveGovSub: 0.7,   // for "Government subsidy/discount"
-  exemptionMedRel: 0.3,   // for "Medical and religious exemptions"
-  exemptionAll: 0.5       // for "Medical, religious and broad personal belief exemptions"
+  scopeAll: 0.5,          // Alternative: All occupations and public spaces
+  threshold100: -0.3,     // Alternative: 100 cases/100k with 15% weekly increase
+  threshold200: -0.7,     // Alternative: 200 cases/100k with 20% weekly increase
+  coverageModerate: 0.4,  // Alternative: Moderate vaccine coverage (70%)
+  coverageHigh: 0.8,      // Alternative: High vaccine coverage (90%)
+  incentivePaid: 0.6,     // Alternative: Paid time off
+  incentiveGovSub: 0.7,   // Alternative: Government subsidy/discount
+  exemptionMedRel: 0.3,   // Alternative: Medical and religious exemptions
+  exemptionAll: 0.5       // Alternative: Medical, religious and broad personal belief exemptions
 };
 
 /** Cost-of-living multipliers (targeted estimates) */
@@ -54,21 +54,36 @@ const colMultipliers = {
   Italy: 0.90
 };
 
-/** Country-specific cost parameters (in local currency) */
+/** Country-specific cost parameters (in local currency) and rationale:
+ *  - Fixed costs represent infrastructure expenses such as administration, enforcement, legal support,
+ *    communication and monitoring costs incurred in implementing the mandate.
+ *  - Variable costs represent costs incurred per compliant individual (e.g. time lost, additional testing,
+ *    operational adjustments). */
 const costParams = {
   Australia: { fixed: 200000, variable: 50, currency: "A$" },
   France: { fixed: 180000, variable: 45, currency: "€" },
   Italy: { fixed: 160000, variable: 40, currency: "€" }
 };
 
-/** Benefit scenarios (benefit per participant) in local currency */
+/** Benefit scenarios (benefit per participant) in local currency.
+ *  These represent assumed average monetary benefits per additional vaccinated individual,
+ *  reflecting avoided healthcare costs and improved public health outcomes. Policy makers
+ *  can select:
+ *    - Low: 400 (conservative estimate)
+ *    - Medium: 500 (central estimate)
+ *    - High: 600 (optimistic estimate)
+ */
 const benefitScenarios = {
   low: 400,
   medium: 500,
   high: 600
 };
 
-/** Compute cost and benefit data based on country and participants */
+/** Compute cost and benefit data based on country, participants, and cost-of-living adjustment.
+ *  Rationale: Total cost = fixed cost (infrastructure) + (variable cost per participant × number of participants).
+ *  Total benefit = benefit per participant (selected scenario) × number of participants.
+ *  Net benefit = Total benefit − Total cost.
+ */
 function computeCostBenefits(country, participants, adjustCOL) {
   const params = costParams[country];
   const multiplier = (adjustCOL === "yes") ? colMultipliers[country] : 1;
@@ -317,7 +332,7 @@ function drawUptakeChart(uptakeVal) {
   });
 }
 
-/** Render Costs & Benefits Analysis with detailed cards */
+/** Render Costs & Benefits Analysis with detailed cards and combined chart */
 let combinedChartInstance = null;
 function renderCostsBenefits() {
   const scenario = buildScenarioFromInputs();
@@ -328,13 +343,13 @@ function renderCostsBenefits() {
   let costCardsHTML = `
     <div class="card cost-card">
       <h4>Fixed Costs</h4>
-      <p>These costs include administration, enforcement, communication, legal support and monitoring expenses incurred in implementing the mandate.</p>
+      <p>Costs associated with administration, enforcement, legal support, communication and monitoring.</p>
       <p><strong>Value:</strong> ${currency}${costData.fixedCost.toFixed(2)}</p>
     </div>
     <div class="card cost-card">
       <h4>Variable Costs</h4>
-      <p>These costs are incurred per compliant individual (e.g. time lost, additional testing, and operational adjustments).</p>
-      <p><strong>Per Participant Cost:</strong> ${currency}${costParams[scenario.country].variable.toFixed(2)} (adjusted by cost-of-living multiplier)</p>
+      <p>Costs incurred per compliant participant (e.g. time lost, additional testing and operational adjustments).</p>
+      <p><strong>Per Participant Cost:</strong> ${currency}${costParams[scenario.country].variable.toFixed(2)} (adjusted by cost‐of‐living multiplier)</p>
       <p><strong>Total Variable Cost:</strong> ${currency}${costData.variableCost.toFixed(2)}</p>
     </div>
     <div class="card cost-card">
@@ -342,11 +357,19 @@ function renderCostsBenefits() {
       <p><strong>Total Cost:</strong> ${currency}${costData.totalCost.toFixed(2)}</p>
     </div>`;
   
-  // Build benefit cards
+  // Build benefit cards with rationale explanation
   let benefitCardsHTML = `
     <div class="card cost-card">
       <h4>Benefit per Participant</h4>
-      <p>Estimated savings from reduced healthcare costs and improved public health outcomes. The benefit scenario is selected by policy makers.</p>
+      <p>This value represents the estimated monetary benefit per additional vaccinated individual,
+         capturing avoided healthcare costs and improved quality of life (via reduced risk of severe illness or death).<br>
+         Policy makers can select:
+         <ul>
+           <li>Low: Conservative estimate (benefit = 400 per participant)</li>
+           <li>Medium: Central estimate (benefit = 500 per participant)</li>
+           <li>High: Optimistic estimate (benefit = 600 per participant)</li>
+         </ul>
+      </p>
       <p><strong>Benefit:</strong> ${currency}${benefitScenarios[document.getElementById("benefitScenario").value].toFixed(2)} per participant</p>
     </div>
     <div class="card cost-card">
@@ -361,7 +384,7 @@ function renderCostsBenefits() {
   const costsTab = document.getElementById("costsBenefitsResults");
   costsTab.innerHTML = costCardsHTML + benefitCardsHTML;
   
-  // Combined bar chart for summary
+  // Combined bar chart for visual summary
   const combinedChartContainer = document.createElement("div");
   combinedChartContainer.id = "combinedChartContainer";
   combinedChartContainer.innerHTML = `<canvas id="combinedChart"></canvas>`;
