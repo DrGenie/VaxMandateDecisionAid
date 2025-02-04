@@ -1,5 +1,6 @@
-// script.js
+/* script.js */
 
+// Wait for DOM to load
 document.addEventListener("DOMContentLoaded", function() {
   const tabButtons = document.querySelectorAll(".tablink");
   tabButtons.forEach(button => {
@@ -23,89 +24,129 @@ function openTab(tabId, btn) {
   btn.classList.add("active");
   btn.setAttribute("aria-selected", "true");
 
-  if (tabId === 'wtpTab') renderWTPChart();
+  if (tabId === 'mrsTab') renderMRSChart();
   if (tabId === 'costsTab') renderCostsBenefits();
   if (tabId === 'probTab') renderUptakeChart();
 }
 
-/** Update Range Slider Display for Financial Incentive */
-function updateFinancialDisplay(val) {
-  document.getElementById("financialLabel").textContent = val;
-}
-
-/** Coefficient estimates based on targeted literature and theoretical expectations
-    (e.g., Betsch et al., 2018; Larson et al., 2014) */
+/** Coefficient estimates for vaccine mandate attributes */
 const vaxCoefficients = {
-  Scope_All: 0.6,           // Utility gain for mandating all occupations/public spaces
-  Threshold_100: -0.4,      // Additional disutility for moderate infection threshold
-  Threshold_200: -1.0,      // Greater disutility for severe infection threshold
-  Coverage_Moderate: 0.5,   // Utility gain for moderate (70%) vaccine coverage
-  Coverage_High: 1.0,       // Higher utility gain for high (90%) coverage
-  Incentive_Paid: 0.7,      // Utility gain for paid time off incentive
-  Incentive_GovSub: 0.8,    // Utility gain for government subsidy incentive
-  Exemption_MedRel: 0.4,    // Utility gain for allowing medical and religious exemptions
-  Exemption_All: 0.7,       // Utility gain for broader exemption policy
-  Financial_Incentive: 0.002 // Trade-off parameter (per USD offered)
+  scopeAll: 0.5,          // for "All occupations and public spaces"
+  threshold100: -0.3,     // for "100 cases/100k with 15% weekly increase"
+  threshold200: -0.7,     // for "200 cases/100k with 20% weekly increase"
+  coverageModerate: 0.4,  // for "Moderate vaccine coverage (70%)"
+  coverageHigh: 0.8,      // for "High vaccine coverage (90%)"
+  incentivePaid: 0.6,     // for "Paid time off"
+  incentiveGovSub: 0.7,   // for "Government subsidy/discount"
+  exemptionMedRel: 0.3,   // for "Medical and religious exemptions"
+  exemptionAll: 0.5       // for "Medical, religious, and broad personal belief exemptions"
 };
 
-/** Build scenario from user inputs */
+/** Build scenario from inputs */
 function buildScenarioFromInputs() {
   const country = document.getElementById("country_select").value;
-  const scope = document.querySelector('input[name="scope"]:checked').value;  
-  const threshold = document.querySelector('input[name="threshold"]:checked').value;
-  const coverage = document.querySelector('input[name="coverage"]:checked').value;
-  const incentive = document.querySelector('input[name="incentive"]:checked').value;
-  const exemption = document.querySelector('input[name="exemption"]:checked').value;
-  const financialVal = parseFloat(document.getElementById("financialSlider").value);
-
-  // Dummy coding: reference levels are coded as 0.
-  const scopeAll = (scope === "all") ? 1 : 0;
-  let threshold100 = 0, threshold200 = 0;
-  if (threshold === "100") threshold100 = 1;
-  if (threshold === "200") threshold200 = 1;
   
-  let coverageModerate = 0, coverageHigh = 0;
-  if (coverage === "70") coverageModerate = 1;
-  if (coverage === "90") coverageHigh = 1;
+  // Scope: if radio button for "all" is selected, then value 1; otherwise baseline (0)
+  const scopeRadio = document.querySelector('input[name="scope"]:checked');
+  const scopeValue = scopeRadio ? 1 : 0;
+  const scopeText = scopeRadio ? "All occupations and public spaces" : "High‑risk occupations only";
   
-  let incentivePaid = 0, incentiveGovSub = 0;
-  if (incentive === "paid") incentivePaid = 1;
-  if (incentive === "govsub") incentiveGovSub = 1;
+  // Infection Threshold: radio buttons for alternatives (100 or 200); if none selected, baseline (50)
+  const thresholdRadio = document.querySelector('input[name="threshold"]:checked');
+  let thresholdValue = 0;
+  let thresholdText = "50 cases/100k with 10% weekly increase";
+  if (thresholdRadio) {
+    if (thresholdRadio.value === "100") {
+      thresholdValue = 1;
+      thresholdText = "100 cases/100k with 15% weekly increase";
+    } else if (thresholdRadio.value === "200") {
+      thresholdValue = 2;
+      thresholdText = "200 cases/100k with 20% weekly increase";
+    }
+  }
   
-  let exemptionMedRel = 0, exemptionAll = 0;
-  if (exemption === "medRel") exemptionMedRel = 1;
-  if (exemption === "all") exemptionAll = 1;
+  // Vaccine Coverage Requirement: radio buttons for alternatives (70 or 90); baseline is 50%
+  const coverageRadio = document.querySelector('input[name="coverage"]:checked');
+  let coverageValue = 0;
+  let coverageText = "Low vaccine coverage (50%)";
+  if (coverageRadio) {
+    if (coverageRadio.value === "70") {
+      coverageValue = 1;
+      coverageText = "Moderate vaccine coverage (70%)";
+    } else if (coverageRadio.value === "90") {
+      coverageValue = 2;
+      coverageText = "High vaccine coverage (90%)";
+    }
+  }
   
-  // Calculate utility as linear sum of attribute effects
-  const utility =
-    (vaxCoefficients.Scope_All * scopeAll) +
-    (vaxCoefficients.Threshold_100 * threshold100) +
-    (vaxCoefficients.Threshold_200 * threshold200) +
-    (vaxCoefficients.Coverage_Moderate * coverageModerate) +
-    (vaxCoefficients.Coverage_High * coverageHigh) +
-    (vaxCoefficients.Incentive_Paid * incentivePaid) +
-    (vaxCoefficients.Incentive_GovSub * incentiveGovSub) +
-    (vaxCoefficients.Exemption_MedRel * exemptionMedRel) +
-    (vaxCoefficients.Exemption_All * exemptionAll) +
-    (vaxCoefficients.Financial_Incentive * financialVal);
-
-  // Logistic transformation: assume opt-out utility = 0
+  // Incentives: radio buttons for alternatives; baseline is None.
+  const incentiveRadio = document.querySelector('input[name="incentive"]:checked');
+  let incentiveValue = 0;
+  let incentiveText = "None (No incentives)";
+  if (incentiveRadio) {
+    if (incentiveRadio.value === "paid") {
+      incentiveValue = 1;
+      incentiveText = "Paid time off for vaccination (1-3 days)";
+    } else if (incentiveRadio.value === "govsub") {
+      incentiveValue = 2;
+      incentiveText = "Government subsidy/discount on services";
+    }
+  }
+  
+  // Exemption Policy: radio buttons for alternatives; baseline is Medical exemptions only.
+  const exemptionRadio = document.querySelector('input[name="exemption"]:checked');
+  let exemptionValue = 0;
+  let exemptionText = "Medical exemptions only";
+  if (exemptionRadio) {
+    if (exemptionRadio.value === "medRel") {
+      exemptionValue = 1;
+      exemptionText = "Medical and religious exemptions";
+    } else if (exemptionRadio.value === "all") {
+      exemptionValue = 2;
+      exemptionText = "Medical, religious, and broad personal belief exemptions";
+    }
+  }
+  
+  // Calculate utility as sum of coefficients for alternatives if selected
+  let utility = 0;
+  utility += scopeValue * vaxCoefficients.scopeAll;
+  if (thresholdValue === 1) {
+    utility += vaxCoefficients.threshold100;
+  } else if (thresholdValue === 2) {
+    utility += vaxCoefficients.threshold200;
+  }
+  if (coverageValue === 1) {
+    utility += vaxCoefficients.coverageModerate;
+  } else if (coverageValue === 2) {
+    utility += vaxCoefficients.coverageHigh;
+  }
+  if (incentiveValue === 1) {
+    utility += vaxCoefficients.incentivePaid;
+  } else if (incentiveValue === 2) {
+    utility += vaxCoefficients.incentiveGovSub;
+  }
+  if (exemptionValue === 1) {
+    utility += vaxCoefficients.exemptionMedRel;
+  } else if (exemptionValue === 2) {
+    utility += vaxCoefficients.exemptionAll;
+  }
+  
+  // Logistic transformation for uptake probability
   const uptakeProb = 1 / (1 + Math.exp(-utility));
   const uptakePercentage = uptakeProb * 100;
-  // Base participants per country is 2000
-  const participants = uptakeProb * 2000;
-
+  // Base participants per country = 2000
+  const participants = Math.round(uptakeProb * 2000);
+  
   return {
     country,
-    scope: (scope === "all") ? "All occupations/public spaces" : "High‑risk occupations only",
-    threshold: threshold,
-    coverage: coverage + "%",
-    incentive: (incentive === "none") ? "No incentives" : (incentive === "paid") ? "Paid time off" : "Govt subsidy",
-    exemption: (exemption === "medical") ? "Medical only" : (exemption === "medRel") ? "Medical & Religious" : "Broad exemptions",
-    financialVal,
+    scope: scopeText,
+    threshold: thresholdText,
+    coverage: coverageText,
+    incentive: incentiveText,
+    exemption: exemptionText,
     utility,
     uptakePercentage: uptakePercentage.toFixed(2),
-    participants: Math.round(participants)
+    participants
   };
 }
 
@@ -115,11 +156,10 @@ function calculateScenario() {
   const resultHTML = `<h4>Scenario Results</h4>
     <p><strong>Country:</strong> ${scenario.country}</p>
     <p><strong>Scope:</strong> ${scenario.scope}</p>
-    <p><strong>Infection Threshold:</strong> ${scenario.threshold} cases/100k</p>
+    <p><strong>Infection Threshold:</strong> ${scenario.threshold}</p>
     <p><strong>Vaccine Coverage Requirement:</strong> ${scenario.coverage}</p>
-    <p><strong>Incentive:</strong> ${scenario.incentive}</p>
+    <p><strong>Incentives:</strong> ${scenario.incentive}</p>
     <p><strong>Exemption Policy:</strong> ${scenario.exemption}</p>
-    <p><strong>Financial Incentive:</strong> $${scenario.financialVal}</p>
     <p><strong>Predicted Uptake:</strong> ${scenario.uptakePercentage}%</p>
     <p><strong>Estimated Participants:</strong> ${scenario.participants}</p>`;
   document.getElementById("modalResults").innerHTML = resultHTML;
@@ -134,55 +174,48 @@ function closeModal() {
   document.getElementById("resultModal").style.display = "none";
 }
 
-/** Render WTP Chart */
-let wtpChartInstance = null;
-function renderWTPChart() {
-  const ctx = document.getElementById("wtpChartMain").getContext("2d");
-  if (wtpChartInstance) wtpChartInstance.destroy();
-  // Calculate WTP (USD) for non-reference attribute levels:
-  // WTP = - (β_attribute) / (β_Financial_Incentive)
-  const wtpData = [
-    { attribute: "All occupations/public spaces", wtp: -(vaxCoefficients.Scope_All)/vaxCoefficients.Financial_Incentive },
-    { attribute: "100 cases/100k threshold", wtp: -(vaxCoefficients.Threshold_100)/vaxCoefficients.Financial_Incentive },
-    { attribute: "200 cases/100k threshold", wtp: -(vaxCoefficients.Threshold_200)/vaxCoefficients.Financial_Incentive },
-    { attribute: "70% vaccine coverage", wtp: -(vaxCoefficients.Coverage_Moderate)/vaxCoefficients.Financial_Incentive },
-    { attribute: "90% vaccine coverage", wtp: -(vaxCoefficients.Coverage_High)/vaxCoefficients.Financial_Incentive },
-    { attribute: "Paid time off", wtp: -(vaxCoefficients.Incentive_Paid)/vaxCoefficients.Financial_Incentive },
-    { attribute: "Govt subsidy/discount", wtp: -(vaxCoefficients.Incentive_GovSub)/vaxCoefficients.Financial_Incentive },
-    { attribute: "Medical & Religious exemptions", wtp: -(vaxCoefficients.Exemption_MedRel)/vaxCoefficients.Financial_Incentive },
-    { attribute: "Broad exemption policy", wtp: -(vaxCoefficients.Exemption_All)/vaxCoefficients.Financial_Incentive }
-  ];
-  const labels = wtpData.map(item => item.attribute);
-  const values = wtpData.map(item => item.wtp);
+/** Render MRS Chart */
+let mrsChartInstance = null;
+function renderMRSChart() {
+  const ctx = document.getElementById("mrsChart").getContext("2d");
+  if (mrsChartInstance) mrsChartInstance.destroy();
+  
+  // Compute MRS values for Infection Threshold vs Vaccine Coverage:
+  const mrsModerate = - (vaxCoefficients.threshold100) / (vaxCoefficients.coverageModerate);
+  const mrsSevere = - (vaxCoefficients.threshold200) / (vaxCoefficients.coverageHigh);
+  
   const dataConfig = {
-    labels,
+    labels: ["MRS (100 cases)", "MRS (200 cases)"],
     datasets: [{
-      label: "WTP (USD)",
-      data: values,
-      backgroundColor: values.map(v => v >= 0 ? 'rgba(40,167,69,0.6)' : 'rgba(220,53,69,0.6)'),
-      borderColor: values.map(v => v >= 0 ? 'rgba(40,167,69,1)' : 'rgba(220,53,69,1)'),
+      label: "MRS Value",
+      data: [mrsModerate, mrsSevere],
+      backgroundColor: ['rgba(54, 162, 235, 0.6)', 'rgba(75, 192, 192, 0.6)'],
+      borderColor: ['rgba(54, 162, 235, 1)', 'rgba(75, 192, 192, 1)'],
       borderWidth: 1
     }]
   };
-  wtpChartInstance = new Chart(ctx, {
+  
+  mrsChartInstance = new Chart(ctx, {
     type: 'bar',
     data: dataConfig,
     options: {
       responsive: true,
-      scales: { y: { beginAtZero: true } },
+      scales: {
+        y: { beginAtZero: true }
+      },
       plugins: {
         legend: { display: false },
-        title: { display: true, text: "WTP (USD) for Mandate Attributes", font: { size: 16 } },
+        title: { display: true, text: "Marginal Rate of Substitution", font: { size: 16 } },
         tooltip: {
           callbacks: {
-            label: function(context) {
-              return `${context.dataset.label}: ${context.parsed.y.toFixed(2)}`;
-            }
+            label: context => `${context.dataset.label}: ${context.parsed.y.toFixed(2)}`
           }
         }
       }
     }
   });
+  
+  document.getElementById("mrsInfo").innerHTML = `<p><strong>Interpretation:</strong> To offset the disutility of moving from the benchmark threshold (50 cases/100k) to 100 cases/100k, a change in vaccine coverage equivalent to an MRS of ${mrsModerate.toFixed(2)} is needed. For a shift to 200 cases/100k, the required trade-off is ${mrsSevere.toFixed(2)}.</p>`;
 }
 
 /** Render Uptake Chart */
@@ -192,8 +225,6 @@ function renderUptakeChart() {
   const uptakeVal = parseFloat(scenario.uptakePercentage);
   drawUptakeChart(uptakeVal);
 }
-
-/** Draw Uptake Chart (Doughnut) */
 function drawUptakeChart(uptakeVal) {
   const ctx = document.getElementById("uptakeChart").getContext("2d");
   if (uptakeChart) uptakeChart.destroy();
@@ -217,9 +248,7 @@ function drawUptakeChart(uptakeVal) {
         },
         tooltip: {
           callbacks: {
-            label: function(context) {
-              return `${context.label}: ${context.parsed.toFixed(1)}%`;
-            }
+            label: context => `${context.label}: ${context.parsed.toFixed(1)}%`
           }
         }
       }
@@ -227,39 +256,50 @@ function drawUptakeChart(uptakeVal) {
   });
 }
 
-/** Costs & Benefits Analysis (illustrative) */
+/** Render Costs & Benefits Analysis */
 let combinedChartInstance = null;
 function renderCostsBenefits() {
   const scenario = buildScenarioFromInputs();
-  // For illustration, assume intervention cost is a function of the financial incentive and fixed cost components.
-  const fixedCost = 50000; // fixed program cost (USD)
-  const variableCost = scenario.financialVal * 10; // arbitrary multiplier
-  const totalCost = fixedCost + variableCost;
-  // Assume benefits increase with higher uptake (e.g., reduced disease burden)
-  const monetizedBenefits = scenario.participants * 50; // arbitrary benefit per participant (USD)
-  const netBenefit = monetizedBenefits - totalCost;
-
+  // Define cost components (USD)
+  const fixedCost = 200000; // fixed administration, enforcement, and communication cost
+  const variableCostPerPerson = 50; // per compliant individual
+  const totalCost = fixedCost + (variableCostPerPerson * scenario.participants);
+  // Benefits: e.g., reduced healthcare costs per participant
+  const benefitPerParticipant = 500; // USD
+  const totalBenefit = benefitPerParticipant * scenario.participants;
+  const netBenefit = totalBenefit - totalCost;
+  
   const costsTab = document.getElementById("costsBenefitsResults");
   costsTab.innerHTML = `
-    <h4>Costs &amp; Benefits Analysis</h4>
-    <p><strong>Total Intervention Cost:</strong> $${totalCost.toFixed(2)}</p>
-    <p><strong>Monetized Benefits:</strong> $${monetizedBenefits.toFixed(2)}</p>
-    <p><strong>Net Benefit:</strong> $${netBenefit.toFixed(2)}</p>
+    <h4>Cost Components</h4>
+    <ul>
+      <li><strong>Fixed Cost:</strong> $${fixedCost.toFixed(2)} (administration, enforcement, communication)</li>
+      <li><strong>Variable Cost per Participant:</strong> $${variableCostPerPerson.toFixed(2)}</li>
+      <li><strong>Total Cost:</strong> $${totalCost.toFixed(2)}</li>
+    </ul>
+    <h4>Benefits</h4>
+    <ul>
+      <li><strong>Benefit per Participant:</strong> $${benefitPerParticipant.toFixed(2)} (e.g., reduced healthcare expenses)</li>
+      <li><strong>Total Benefit:</strong> $${totalBenefit.toFixed(2)}</li>
+    </ul>
+    <h4>Net Benefit</h4>
+    <p>$${netBenefit.toFixed(2)}</p>
   `;
+  
   const combinedChartContainer = document.createElement("div");
   combinedChartContainer.id = "combinedChartContainer";
   combinedChartContainer.innerHTML = `<canvas id="combinedChart"></canvas>`;
   costsTab.appendChild(combinedChartContainer);
-
+  
   const ctxCombined = document.getElementById("combinedChart").getContext("2d");
   if (combinedChartInstance) combinedChartInstance.destroy();
   combinedChartInstance = new Chart(ctxCombined, {
     type: 'bar',
     data: {
-      labels: ["Total Cost", "Monetized Benefits", "Net Benefit"],
+      labels: ["Total Cost", "Total Benefit", "Net Benefit"],
       datasets: [{
         label: "USD",
-        data: [totalCost, monetizedBenefits, netBenefit],
+        data: [totalCost, totalBenefit, netBenefit],
         backgroundColor: [
           'rgba(220,53,69,0.6)',
           'rgba(40,167,69,0.6)',
@@ -277,12 +317,12 @@ function renderCostsBenefits() {
       responsive: true,
       plugins: {
         legend: { display: false },
-        title: { display: true, text: "Combined Cost-Benefit Analysis", font: { size: 16 } }
+        title: { display: true, text: "Cost-Benefit Analysis", font: { size: 16 } }
       },
       scales: {
         y: {
           beginAtZero: true,
-          suggestedMax: Math.max(totalCost, monetizedBenefits, Math.abs(netBenefit)) * 1.2
+          suggestedMax: Math.max(totalCost, totalBenefit, Math.abs(netBenefit)) * 1.2
         }
       }
     }
@@ -298,10 +338,10 @@ function saveScenario() {
   savedScenarios.push(scenario);
   const tableBody = document.querySelector("#scenarioTable tbody");
   const row = document.createElement("tr");
-  const props = ["name", "country", "scope", "threshold", "coverage", "incentive", "exemption", "financialVal", "uptakePercentage", "participants"];
+  const props = ["name", "country", "scope", "threshold", "coverage", "incentive", "exemption", "uptakePercentage", "participants"];
   props.forEach(prop => {
     const cell = document.createElement("td");
-    cell.textContent = (prop === "financialVal") ? `$${scenario[prop].toFixed(2)}` : scenario[prop];
+    cell.textContent = scenario[prop];
     row.appendChild(cell);
   });
   tableBody.appendChild(row);
@@ -331,11 +371,10 @@ function openComparison() {
     doc.setFontSize(12);
     doc.text(`Country: ${scenario.country}`, 15, currentY); currentY += 5;
     doc.text(`Scope: ${scenario.scope}`, 15, currentY); currentY += 5;
-    doc.text(`Threshold: ${scenario.threshold} cases/100k`, 15, currentY); currentY += 5;
+    doc.text(`Threshold: ${scenario.threshold}`, 15, currentY); currentY += 5;
     doc.text(`Coverage: ${scenario.coverage}`, 15, currentY); currentY += 5;
     doc.text(`Incentive: ${scenario.incentive}`, 15, currentY); currentY += 5;
     doc.text(`Exemption: ${scenario.exemption}`, 15, currentY); currentY += 5;
-    doc.text(`Financial Incentive: $${scenario.financialVal.toFixed(2)}`, 15, currentY); currentY += 5;
     doc.text(`Predicted Uptake: ${scenario.uptakePercentage}%`, 15, currentY); currentY += 5;
     doc.text(`Participants: ${scenario.participants}`, 15, currentY); currentY += 10;
   });
