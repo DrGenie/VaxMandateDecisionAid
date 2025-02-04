@@ -1,4 +1,4 @@
-/* styless.css */
+/* styles.css */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -19,7 +19,7 @@ body {
   padding: 20px 30px;
 }
 
-/* CARD style */
+/* CARD */
 .card {
   background-color: #f7f9fc;
   border-radius: 8px;
@@ -124,6 +124,10 @@ select {
   border-radius: 4px;
   font-size: 1em;
 }
+.small-text {
+  font-size: 0.8em;
+  color: #7f8c8d;
+}
 
 /* TOOLTIP for icons */
 .info-icon {
@@ -219,6 +223,9 @@ canvas {
   padding: 15px;
   border-radius: 6px;
   margin-top: 15px;
+}
+.cost-scenario {
+  margin-bottom: 15px;
 }
 
 /* TABLE */
